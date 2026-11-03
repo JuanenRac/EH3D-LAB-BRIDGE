@@ -1,0 +1,27 @@
+[package]
+name = "eh3d-lab-bridge"
+version = "0.0.1"
+edition = "2021"
+rust-version = "1.88"
+description = "Import of measured curves from a defined file format, test records with instrument and condition, and the comparison with a simulated curve that carries its uncertainty"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/JuanenRac/EH3D-LAB-BRIDGE"
+readme = "README.md"
+
+[lib]
+name = "eh3d_lab_bridge"
+path = "src/lib.rs"
+
+[[bin]]
+name = "eh3d-lab-bridge"
+path = "src/main.rs"
+
+[dependencies]
+# sha2: a record cites the data file it was made from by its content
+sha2 = "0.10"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+
+[dev-dependencies]
+tempfile = "3"

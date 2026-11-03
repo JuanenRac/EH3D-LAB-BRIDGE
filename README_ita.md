@@ -6,7 +6,7 @@
 
 <p align="center"><a href="README.md">🇺🇸 English</a> | <a href="README_spa.md">🇪🇸 Español</a> | <a href="README_fra.md">🇫🇷 Français</a> | 🇮🇹 <b>Italiano</b> | <a href="README_deu.md">🇩🇪 Deutsch</a> | <a href="README_zho.md">🇨🇳 中文</a> | <a href="README_jpn.md">🇯🇵 日本語</a> | <a href="README_por.md">🇵🇹 Português</a></p>
 
-### EH3D-LAB-BRIDGE: pianificato come un modulo che correla i dataset di simulazione con misure reali di laboratorio. Ancora senza codice.
+### EH3D-LAB-BRIDGE: curve misurate, schede di prova e confronto con una curva simulata, portando con sé l'incertezza. Codice iniziale.
 
 <p align="center">
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
@@ -19,7 +19,7 @@
 
 ---
 
-**Verifica di onestà - cosa funziona oggi:** niente. EH3D-LAB-BRIDGE è solo pianificato: non ha codice, né test propri, e non è mai stato eseguito. Esistono la base che ogni repository della suite porta con sé, più l'ambito, i requisiti, le dipendenze, il modello delle minacce e le decisioni scritti in `docs/`.
+**Verifica di onestà - cosa funziona oggi:** una libreria Rust e una riga di comando che leggono una curva misurata da un formato CSV definito (un'intestazione che nomina l'unità di ogni colonna, con una colonna di incertezza facoltativa), controllano una scheda di prova (strumento, condizioni, grandezza e SHA-256 dei dati) e confrontano la curva misurata con una simulata, dando lo scostamento di ogni punto con la sua incertezza estesa. Un confronto è giudicato solo rispetto a una tolleranza fissata dalla persona; senza di essa dice che non è giudicato. Tutto è stato eseguito solo su curve prodotte dai propri test. Non esistono: la lettura di file scritti da strumenti reali, qualsiasi controllo di strumenti e il collegamento con il passaporto tecnico.
 
 ---
 
@@ -46,14 +46,14 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Controlli del repository | 🟡 | Il controllo del repository, quello delle immagini e i 3 test della base girano nella CI e passano. |
-| Test | 🟠 | Solo la base ha test (3); il codice del repository avrà i propri man mano che viene scritto. |
+| Test | 🟡 | I 23 test del codice Rust e i 3 della base passano su un computer. Usano solo curve e schede prodotte dai test stessi. |
 | Hardware reale | 🟠 | Non eseguito su nessuna macchina né scheda: nulla qui è stato provato su hardware. |
-| Funzione pianificata | 🔴 | Non iniziata: nulla della funzione pianificata è stato scritto. |
-| Requisiti | 🔴 | Tutti i requisiti sono solo pianificati: nessuno è implementato o verificato. |
+| Funzione pianificata | 🟠 | Scritto: il formato CSV con unità, la scheda di prova rifiutata senza strumento, il confronto con interpolazione, scostamento, incertezza e un verdetto entro, fuori o non conclusivo. Non scritto: i file di strumenti reali e il collegamento con il passaporto tecnico. |
+| Requisiti | 🟠 | 5 dei 6 requisiti sono a livello di prototipo; il collegamento con il passaporto tecnico è solo pianificato. Nessuno è validato e nessuna tolleranza è stata fissata su un banco reale. |
 
 ## 🎯 Panoramica
 
-* **Pianificato:** EH3D-LAB-BRIDGE vuole essere un modulo che correla i dataset di simulazione con misure reali di laboratorio. È pensato come una libreria senza finestra, con interfaccia a riga di comando e, quando serve, un tipo di attività del server. Nulla di tutto questo esiste ancora.
+* **Cosa esiste:** una libreria e una riga di comando, senza finestra, che leggono una curva misurata (`import`), la confrontano con una simulata (`compare`) e controllano una scheda di prova con il suo file di dati (`record`). **Pianificato:** file di strumenti reali, il collegamento con il passaporto tecnico e un tipo di attività del server.
 
 ## 🧩 Ruolo in EH3D
 
@@ -105,6 +105,8 @@ EH3D-LAB-BRIDGE/
 │   ├── NOT_YET.md RULES.md                      idee per dopo e regole per scrivere il codice
 │   └── adr/                                     i registri delle decisioni accettate
 ├── AGENTS.md                                    regole per chi modifica il repository
+├── src/                                         la libreria e la riga di comando
+├── Cargo.toml Cargo.lock deny.toml              pacchetto Rust e politica delle dipendenze
 ├── tools/                                       il controllo del repository, i suoi test e gli strumenti delle immagini
 ├── images/                                      banner e le immagini di Architettura e Struttura del repository
 ├── .github/                                     workflow di CI e della dashboard, modelli di issue e pull request
@@ -121,7 +123,7 @@ EH3D-LAB-BRIDGE/
 
 **Limiti noti oggi**
 
-* Solo pianificato: non c'è codice, non è stato eseguito nulla e nessun requisito è implementato.
+* Codice iniziale: eseguito solo su curve dei propri test; non ha di proposito alcuna tolleranza predefinita e non controlla alcuno strumento.
 
 **Prossimi passi**
 

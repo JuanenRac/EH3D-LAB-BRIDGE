@@ -6,7 +6,7 @@
 
 <p align="center"><a href="README.md">🇺🇸 English</a> | 🇪🇸 <b>Español</b> | <a href="README_fra.md">🇫🇷 Français</a> | <a href="README_ita.md">🇮🇹 Italiano</a> | <a href="README_deu.md">🇩🇪 Deutsch</a> | <a href="README_zho.md">🇨🇳 中文</a> | <a href="README_jpn.md">🇯🇵 日本語</a> | <a href="README_por.md">🇵🇹 Português</a></p>
 
-### EH3D-LAB-BRIDGE: planificado como un módulo que correlaciona conjuntos de datos de simulación con medidas reales de laboratorio. Todavía sin código.
+### EH3D-LAB-BRIDGE: curvas medidas, registros de ensayo y la comparación con una curva simulada, llevando la incertidumbre. Código inicial.
 
 <p align="center">
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
@@ -19,7 +19,7 @@
 
 ---
 
-**Comprobación de honestidad - lo que se ejecuta hoy:** nada. EH3D-LAB-BRIDGE solo está planificado: no tiene código, ni pruebas propias, y nunca se ha ejecutado. Lo que existe es la base que lleva todo repositorio de la suite, más el alcance, los requisitos, las dependencias, el modelo de amenazas y las decisiones escritos en `docs/`.
+**Comprobación de honestidad - lo que se ejecuta hoy:** una biblioteca de Rust y una línea de comandos que leen una curva medida de un formato CSV definido (una cabecera que nombra la unidad de cada columna, con una columna de incertidumbre opcional), comprueban un registro de ensayo (instrumento, condiciones, magnitud y el SHA-256 de los datos) y comparan la curva medida con una simulada, dando la desviación de cada punto con su incertidumbre expandida. Una comparación se juzga solo frente a una tolerancia que fija la persona; sin ella dice que no se juzga. Todo se ha ejecutado solo con curvas hechas por sus propias pruebas. Lo que no existe: la lectura de ficheros escritos por instrumentos reales, cualquier control de instrumentos y el enlace con el pasaporte técnico.
 
 ---
 
@@ -46,14 +46,14 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Comprobaciones del repositorio | 🟡 | La comprobación del repositorio, la de las imágenes y las 3 pruebas de la base se ejecutan en el CI y pasan. |
-| Pruebas | 🟠 | Solo la base tiene pruebas (3); el código del repositorio tendrá las suyas a medida que se escriba. |
+| Pruebas | 🟡 | Las 23 pruebas del código Rust y las 3 de la base pasan en un ordenador. Usan solo curvas y registros hechos por las propias pruebas. |
 | Hardware real | 🟠 | No se ha ejecutado en ninguna máquina ni placa: nada de aquí se ha probado en hardware. |
-| Función planificada | 🔴 | Sin empezar: nada de la función planificada está escrito. |
-| Requisitos | 🔴 | Todos los requisitos están solo planificados: ninguno está implementado ni verificado. |
+| Función planificada | 🟠 | Escrito: el formato CSV con unidades, el registro de ensayo que se rechaza sin instrumento, la comparación con interpolación, desviación, incertidumbre y un veredicto dentro, fuera o no concluyente. Sin escribir: ficheros de instrumentos reales y el enlace con el pasaporte técnico. |
+| Requisitos | 🟠 | 5 de los 6 requisitos están en prototipo; el enlace con el pasaporte técnico solo está planificado. Ninguno está validado y no se ha fijado ninguna tolerancia con un banco real. |
 
 ## 🎯 Resumen
 
-* **Planificado:** EH3D-LAB-BRIDGE pretende ser un módulo que correlaciona conjuntos de datos de simulación con medidas reales de laboratorio. Se planea como una biblioteca sin ventana, con interfaz de línea de comandos y, cuando proceda, un tipo de tarea del servidor. Nada de esto existe todavía.
+* **Lo que existe:** una biblioteca y una línea de comandos, sin ventana, que leen una curva medida (`import`), la comparan con una simulada (`compare`) y comprueban un registro de ensayo con su fichero de datos (`record`). **Planificado:** ficheros de instrumentos reales, el enlace con el pasaporte técnico y un tipo de tarea del servidor.
 
 ## 🧩 Papel en EH3D
 
@@ -105,6 +105,8 @@ EH3D-LAB-BRIDGE/
 │   ├── NOT_YET.md RULES.md                      ideas para más adelante y reglas para escribir código
 │   └── adr/                                     los registros de decisiones aceptadas
 ├── AGENTS.md                                    reglas para quien cambia el repositorio
+├── src/                                         la biblioteca y la línea de comandos
+├── Cargo.toml Cargo.lock deny.toml              paquete de Rust y política de dependencias
 ├── tools/                                       la comprobación del repositorio, sus pruebas y las herramientas de las imágenes
 ├── images/                                      banner y las imágenes de Arquitectura y Estructura del repositorio
 ├── .github/                                     flujos de CI y del panel, plantillas de issues y pull requests
@@ -121,7 +123,7 @@ EH3D-LAB-BRIDGE/
 
 **Límites conocidos hoy**
 
-* Solo planificado: no hay código, no se ha ejecutado nada y ningún requisito está implementado.
+* Código inicial: solo se ha ejecutado con curvas hechas por sus propias pruebas; no tiene tolerancia por defecto a propósito y no controla ningún instrumento.
 
 **Siguiente**
 

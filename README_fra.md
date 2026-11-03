@@ -6,7 +6,7 @@
 
 <p align="center"><a href="README.md">🇺🇸 English</a> | <a href="README_spa.md">🇪🇸 Español</a> | 🇫🇷 <b>Français</b> | <a href="README_ita.md">🇮🇹 Italiano</a> | <a href="README_deu.md">🇩🇪 Deutsch</a> | <a href="README_zho.md">🇨🇳 中文</a> | <a href="README_jpn.md">🇯🇵 日本語</a> | <a href="README_por.md">🇵🇹 Português</a></p>
 
-### EH3D-LAB-BRIDGE : prévu comme un module qui met en corrélation des jeux de données de simulation et des mesures réelles de laboratoire. Pas encore de code.
+### EH3D-LAB-BRIDGE : courbes mesurées, fiches d'essai et comparaison avec une courbe simulée, en portant l'incertitude. Code initial.
 
 <p align="center">
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
@@ -19,7 +19,7 @@
 
 ---
 
-**Vérification d'honnêteté - ce qui tourne aujourd'hui :** rien. EH3D-LAB-BRIDGE est seulement prévu : il n'a pas de code, pas de tests propres et n'a jamais été exécuté. Ce qui existe, c'est la base de tout dépôt de la suite, plus le périmètre, les exigences, les dépendances, le modèle de menaces et les décisions écrits dans `docs/`.
+**Vérification d'honnêteté - ce qui tourne aujourd'hui :** une bibliothèque Rust et une ligne de commande qui lisent une courbe mesurée d'un format CSV défini (un en-tête qui nomme l'unité de chaque colonne, avec une colonne d'incertitude facultative), contrôlent une fiche d'essai (instrument, conditions, grandeur et SHA-256 des données) et comparent la courbe mesurée à une courbe simulée, en donnant l'écart de chaque point avec son incertitude élargie. Une comparaison n'est jugée que par rapport à une tolérance fixée par la personne ; sans elle, elle dit qu'elle n'est pas jugée. Tout n'a tourné que sur des courbes faites par ses propres tests. N'existent pas : la lecture de fichiers écrits par de vrais instruments, tout pilotage d'instruments et le lien avec le passeport technique.
 
 ---
 
@@ -46,14 +46,14 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des images et les 3 tests de la base tournent dans la CI et réussissent. |
-| Tests | 🟠 | Seule la base a des tests (3) ; le code du dépôt aura les siens au fur et à mesure qu'il sera écrit. |
+| Tests | 🟡 | Les 23 tests du code Rust et les 3 de la base réussissent sur un ordinateur. Ils n'utilisent que des courbes et des fiches faites par les tests eux-mêmes. |
 | Matériel réel | 🟠 | Non exécuté sur une machine ni une carte : rien ici n'a été essayé sur du matériel. |
-| Fonction prévue | 🔴 | Pas commencée : rien de la fonction prévue n'est écrit. |
-| Exigences | 🔴 | Toutes les exigences sont seulement prévues : aucune n'est implémentée ni vérifiée. |
+| Fonction prévue | 🟠 | Écrit : le format CSV avec unités, la fiche d'essai refusée sans instrument, la comparaison avec interpolation, écart, incertitude et un verdict dans la tolérance, hors tolérance ou non concluant. Non écrit : les fichiers de vrais instruments et le lien avec le passeport technique. |
+| Exigences | 🟠 | 5 des 6 exigences sont au stade de prototype ; le lien avec le passeport technique est seulement prévu. Aucune n'est validée et aucune tolérance n'a été fixée sur un vrai banc. |
 
 ## 🎯 Présentation
 
-* **Prévu :** EH3D-LAB-BRIDGE doit être un module qui met en corrélation des jeux de données de simulation et des mesures réelles de laboratoire. Il est prévu comme une bibliothèque sans fenêtre, avec une interface en ligne de commande et, le cas échéant, un type de tâche du serveur. Rien de cela n'existe encore.
+* **Ce qui existe :** une bibliothèque et une ligne de commande, sans fenêtre, qui lisent une courbe mesurée (`import`), la comparent à une courbe simulée (`compare`) et contrôlent une fiche d'essai avec son fichier de données (`record`). **Prévu :** des fichiers de vrais instruments, le lien avec le passeport technique et un type de tâche du serveur.
 
 ## 🧩 Rôle dans EH3D
 
@@ -105,6 +105,8 @@ EH3D-LAB-BRIDGE/
 │   ├── NOT_YET.md RULES.md                      idées pour plus tard et règles d'écriture du code
 │   └── adr/                                     les décisions acceptées
 ├── AGENTS.md                                    règles pour quiconque modifie le dépôt
+├── src/                                         la bibliothèque et la ligne de commande
+├── Cargo.toml Cargo.lock deny.toml              paquet Rust et politique des dépendances
 ├── tools/                                       le contrôle du dépôt, ses tests et les outils des images
 ├── images/                                      bannière et images d'Architecture et de Structure du dépôt
 ├── .github/                                     workflows de CI et du tableau de bord, modèles d'issues et de pull requests
@@ -121,7 +123,7 @@ EH3D-LAB-BRIDGE/
 
 **Limites connues aujourd'hui**
 
-* Seulement prévu : il n'y a pas de code, rien n'a été exécuté et aucune exigence n'est implémentée.
+* Code initial : n'a tourné que sur des courbes de ses propres tests ; il n'a volontairement aucune tolérance par défaut et ne pilote aucun instrument.
 
 **Ensuite**
 

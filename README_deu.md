@@ -6,7 +6,7 @@
 
 <p align="center"><a href="README.md">🇺🇸 English</a> | <a href="README_spa.md">🇪🇸 Español</a> | <a href="README_fra.md">🇫🇷 Français</a> | <a href="README_ita.md">🇮🇹 Italiano</a> | 🇩🇪 <b>Deutsch</b> | <a href="README_zho.md">🇨🇳 中文</a> | <a href="README_jpn.md">🇯🇵 日本語</a> | <a href="README_por.md">🇵🇹 Português</a></p>
 
-### EH3D-LAB-BRIDGE: geplant als ein Modul, das Simulationsdatensätze mit realen Labormessungen in Beziehung setzt. Noch kein Code.
+### EH3D-LAB-BRIDGE: gemessene Kurven, Prüfprotokolle und der Vergleich mit einer simulierten Kurve, wobei die Unsicherheit mitgeführt wird. Früher Code.
 
 <p align="center">
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
@@ -19,7 +19,7 @@
 
 ---
 
-**Ehrlichkeitscheck - was heute tatsächlich läuft:** nichts. EH3D-LAB-BRIDGE ist nur geplant: Es gibt keinen Code, keine eigenen Tests, und es ist nie gelaufen. Vorhanden sind die Basis, die jedes Repository der Suite trägt, sowie Umfang, Anforderungen, Abhängigkeiten, Bedrohungsmodell und Entscheidungen in `docs/`.
+**Ehrlichkeitscheck - was heute tatsächlich läuft:** eine Rust-Bibliothek und eine Befehlszeile, die eine gemessene Kurve aus einem festgelegten CSV-Format lesen (eine Kopfzeile nennt die Einheit jeder Spalte, optional mit einer Unsicherheitsspalte), ein Prüfprotokoll prüfen (Gerät, Bedingungen, Größe und SHA-256 der Daten) und die gemessene Kurve mit einer simulierten vergleichen, mit der Abweichung jedes Punkts und seiner erweiterten Unsicherheit. Ein Vergleich wird nur gegen eine Toleranz bewertet, die die Person festlegt; ohne sie steht dort, dass nicht bewertet wird. Alles lief nur mit Kurven der eigenen Tests. Es fehlen: das Lesen von Dateien echter Messgeräte, jede Gerätesteuerung und die Verbindung zum technischen Pass.
 
 ---
 
@@ -46,14 +46,14 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Bilder und die 3 Tests der Basis laufen in der CI und bestehen. |
-| Tests | 🟠 | Nur die Basis hat Tests (3); der Code des Repositorys bekommt seine eigenen, sobald er geschrieben wird. |
+| Tests | 🟡 | Die 23 Tests des Rust-Codes und die 3 der Basis bestehen auf einem Rechner. Sie verwenden nur Kurven und Protokolle der Tests selbst. |
 | Echte Hardware | 🟠 | Auf keiner Maschine und keiner Platine ausgeführt: nichts hier wurde auf Hardware ausprobiert. |
-| Geplante Funktion | 🔴 | Nicht begonnen: Von der geplanten Funktion ist nichts geschrieben. |
-| Anforderungen | 🔴 | Alle Anforderungen sind nur geplant: Keine ist umgesetzt oder geprüft. |
+| Geplante Funktion | 🟠 | Geschrieben: das CSV-Format mit Einheiten, das ohne Gerät abgelehnte Prüfprotokoll, der Vergleich mit Interpolation, Abweichung, Unsicherheit und einem Urteil innerhalb, außerhalb oder nicht eindeutig. Nicht geschrieben: Dateien echter Messgeräte und die Verbindung zum technischen Pass. |
+| Anforderungen | 🟠 | 5 der 6 Anforderungen sind im Prototyp; die Verbindung zum technischen Pass ist nur geplant. Keine ist validiert, und an einem echten Messplatz wurde keine Toleranz festgelegt. |
 
 ## 🎯 Überblick
 
-* **Geplant:** EH3D-LAB-BRIDGE soll ein Modul, das Simulationsdatensätze mit realen Labormessungen in Beziehung setzt werden. Vorgesehen ist eine Bibliothek ohne Fenster mit Kommandozeile und, wo es passt, einer Art Server-Aufgabe. Nichts davon existiert bisher.
+* **Was es gibt:** eine Bibliothek und eine Befehlszeile ohne Fenster, die eine gemessene Kurve lesen (`import`), mit einer simulierten vergleichen (`compare`) und ein Prüfprotokoll gegen seine Datendatei prüfen (`record`). **Geplant:** Dateien echter Messgeräte, die Verbindung zum technischen Pass und eine Art Serveraufgabe.
 
 ## 🧩 Rolle in EH3D
 
@@ -105,6 +105,8 @@ EH3D-LAB-BRIDGE/
 │   ├── NOT_YET.md RULES.md                      Ideen für später und Regeln zum Schreiben von Code
 │   └── adr/                                     die angenommenen Entscheidungsprotokolle
 ├── AGENTS.md                                    Regeln für alle, die das Repository ändern
+├── src/                                         die Bibliothek und die Befehlszeile
+├── Cargo.toml Cargo.lock deny.toml              Rust-Paket und Richtlinie der Abhängigkeiten
 ├── tools/                                       die Repository-Prüfung, ihre Tests und die Bild-Werkzeuge
 ├── images/                                      Banner und die Bilder von Architektur und Repository-Struktur
 ├── .github/                                     CI- und Dashboard-Workflows, Vorlagen für Issues und Pull Requests
@@ -121,7 +123,7 @@ EH3D-LAB-BRIDGE/
 
 **Bekannte Grenzen heute**
 
-* Nur geplant: Es gibt keinen Code, nichts wurde ausgeführt und keine Anforderung ist umgesetzt.
+* Früher Code: nur mit Kurven der eigenen Tests ausgeführt; es gibt absichtlich keine Standardtoleranz, und es steuert kein Messgerät.
 
 **Als Nächstes**
 
