@@ -1,6 +1,6 @@
 [package]
 name = "eh3d-lab-bridge"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 rust-version = "1.88"
 description = "Import of measured curves from a defined file format, test records with instrument and condition, and the comparison with a simulated curve that carries its uncertainty"

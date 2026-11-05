@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "ecosystem": "EH3D",
   "name": "EH3D-LAB-BRIDGE",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "role": "library",
   "stack": "rust",
   "technologies": [
@@ -17,7 +17,7 @@
   "family": "PHOENIX",
   "parent": null,
   "build": "cargo build --release; cargo test",
-  "notes": "Scaffolding v0.0.1: early code. A Rust library and command line that read a measured curve from one defined CSV format with units in the header, check a test record (instrument, conditions, quantity, SHA-256 of the data) and compare the measured curve with a simulated one, giving the deviation of every point with its expanded uncertainty and a verdict only against a tolerance that the person sets. It has only run on curves made by its own tests; the files of real instruments, instrument control and the link with the technical passport are not written, and no tolerance exists by default.",
+  "notes": "Scaffolding v0.0.2: early code. A Rust library and command line that read a measured curve from one defined CSV format with units in the header, check a test record (instrument, conditions, quantity, SHA-256 of the data) and compare the measured curve with a simulated one, giving the deviation of every point with its expanded uncertainty and a verdict only against a tolerance that the person sets. It has only run on curves made by its own tests; the files of real instruments, instrument control and the link with the technical passport are not written, and no tolerance exists by default.",
   "native_version": {
     "file": "VERSION",
     "pattern": "^(\\d+\\.\\d+\\.\\d+)"
