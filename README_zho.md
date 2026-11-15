@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
   <img src="https://img.shields.io/badge/Tests-3-2EA043.svg" alt="Tests">
-  <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.3-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -29,7 +29,7 @@
 
 | | |
 |---|---|
-| 版本 | `0.0.2` |
+| 版本 | `0.0.3` |
 | 成熟度 | 脚手架 |
 | 测试 | 3 |
 | 技术栈 | Markdown, Python 3.10+ |
@@ -66,6 +66,14 @@ EH3D-LAB-BRIDGE 是 EH3D Fabrication Suite 的 PHOENIX 系列的一部分。它�
 </p>
 
 本仓库各部分如何协作：谁在使用它、它包含什么、它依赖什么。图片由 `docs/architecture.json` 绘制，并与代码核对。
+
+## 🖼️ 屏幕截图
+
+<p align="center">
+  <img src="images/screens/lab-bridge-01-cli.png" alt="命令行导入一条实测曲线并与仿真曲线比较" width="100%">
+</p>
+
+<p align="center"><em>命令行：`import` 输出实测曲线的摘要和 SHA-256，`compare` 给出每个点的偏差、扩展不确定度和结论，此处在设置文件设定的 0.1 容差之内（退出码 0）。</em></p>
 
 ## 🚀 快速开始
 
