@@ -46,7 +46,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Bilder und die 3 Tests der Basis laufen in der CI und bestehen. |
-| Tests | 🟡 | Die 23 Tests des Rust-Codes und die 3 der Basis bestehen auf einem Rechner. Sie verwenden nur Kurven und Protokolle der Tests selbst. |
+| Tests | 🟡 | Die 31 Tests des Rust-Codes und die 3 der Basis bestehen auf einem Rechner. Sie verwenden nur Kurven und Protokolle der Tests selbst. |
 | Echte Hardware | 🟠 | Auf keiner Maschine und keiner Platine ausgeführt: nichts hier wurde auf Hardware ausprobiert. |
 | Geplante Funktion | 🟠 | Geschrieben: das CSV-Format mit Einheiten, das ohne Gerät abgelehnte Prüfprotokoll, der Vergleich mit Interpolation, Abweichung, Unsicherheit und einem Urteil innerhalb, außerhalb oder nicht eindeutig. Nicht geschrieben: Dateien echter Messgeräte und die Verbindung zum technischen Pass. |
 | Anforderungen | 🟠 | 5 der 6 Anforderungen sind im Prototyp; die Verbindung zum technischen Pass ist nur geplant. Keine ist validiert, und an einem echten Messplatz wurde keine Toleranz festgelegt. |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 Tests
 
-Die Basis hat 3 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung, die Prüfung der Bilder und diese Tests aus.
+Die Basis hat 3 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung, die Prüfung der Bilder und diese Tests aus. Eine simulierte Messbank (`eh3d_lab_bridge::sim`, getestet in `tests/simulation.rs`) schreibt mit einem Generator mit festem Startwert die Datei, die ein Messgerät exportieren würde, samt den Fehlern solcher Dateien - eine Spitze, eine Drift, eine zurückspringende Uhr, verlorene Punkte, eine verlorene Einheit, ein Textwert, eine abgeschnittene und eine leere Datei - und die Tests prüfen, wo jeder abgelehnt oder gefunden wird und dass die nächste saubere Datei wieder beurteilt wird. Es wurde kein echtes Messgerät benutzt.
 
 ## 🏗️ Build und Veröffentlichung
 
@@ -114,6 +114,7 @@ EH3D-LAB-BRIDGE/
 │   └── adr/                                     die angenommenen Entscheidungsprotokolle
 ├── AGENTS.md                                    Regeln für alle, die das Repository ändern
 ├── src/                                         die Bibliothek und die Befehlszeile
+├── tests/                                       die simulierte Messbank: Fehler der exportierten Datei und die Wiederherstellung
 ├── Cargo.toml Cargo.lock deny.toml              Rust-Paket und Richtlinie der Abhängigkeiten
 ├── rust-toolchain.toml                          die festgelegte Rust-Toolchain
 ├── tools/                                       die Repository-Prüfung, ihre Tests und die Bild-Werkzeuge

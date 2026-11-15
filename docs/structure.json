@@ -157,6 +157,19 @@
         },
         {
           "desc": {
+            "en": "the simulated bench: failures of the exported file and the recovery",
+            "es": "el banco simulado: fallos del archivo exportado y la recuperación",
+            "de": "die simulierte Messbank: Fehler der exportierten Datei und die Wiederherstellung",
+            "fr": "le banc simulé : pannes du fichier exporté et reprise",
+            "it": "il banco simulato: guasti del file esportato e il ripristino",
+            "ja": "模擬ベンチ：出力ファイルの不具合と復旧",
+            "zh": "模拟台架：导出文件的故障与恢复",
+            "pt": "a bancada simulada: falhas do ficheiro exportado e a recuperação"
+          },
+          "name": "tests/"
+        },
+        {
+          "desc": {
             "en": "Rust package and policy of the dependencies",
             "es": "paquete de Rust y política de dependencias",
             "de": "Rust-Paket und Richtlinie der Abhängigkeiten",

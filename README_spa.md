@@ -46,7 +46,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Comprobaciones del repositorio | 🟡 | La comprobación del repositorio, la de las imágenes y las 3 pruebas de la base se ejecutan en el CI y pasan. |
-| Pruebas | 🟡 | Las 23 pruebas del código Rust y las 3 de la base pasan en un ordenador. Usan solo curvas y registros hechos por las propias pruebas. |
+| Pruebas | 🟡 | Las 31 pruebas del código Rust y las 3 de la base pasan en un ordenador. Usan solo curvas y registros hechos por las propias pruebas. |
 | Hardware real | 🟠 | No se ha ejecutado en ninguna máquina ni placa: nada de aquí se ha probado en hardware. |
 | Función planificada | 🟠 | Escrito: el formato CSV con unidades, el registro de ensayo que se rechaza sin instrumento, la comparación con interpolación, desviación, incertidumbre y un veredicto dentro, fuera o no concluyente. Sin escribir: ficheros de instrumentos reales y el enlace con el pasaporte técnico. |
 | Requisitos | 🟠 | 5 de los 6 requisitos están en prototipo; el enlace con el pasaporte técnico solo está planificado. Ninguno está validado y no se ha fijado ninguna tolerancia con un banco real. |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 Pruebas
 
-La base tiene 3 pruebas (`python -I -m unittest discover -s tools -p "test_*.py"`), y pasan. El CI ejecuta la comprobación del repositorio, la de las imágenes y esas pruebas.
+La base tiene 3 pruebas (`python -I -m unittest discover -s tools -p "test_*.py"`), y pasan. El CI ejecuta la comprobación del repositorio, la de las imágenes y esas pruebas. Un banco simulado (`eh3d_lab_bridge::sim`, probado en `tests/simulation.rs`) escribe el archivo que exportaría un instrumento, con un generador de semilla fija, con los fallos que tienen esos archivos - un pico, una deriva, un reloj que retrocede, puntos perdidos, una unidad perdida, un valor de texto, un archivo cortado y un archivo vacío - y las pruebas comprueban dónde se rechaza o se detecta cada uno y que el siguiente archivo limpio se juzga de nuevo. No se ha usado ningún instrumento real.
 
 ## 🏗️ Compilación y publicación
 
@@ -114,6 +114,7 @@ EH3D-LAB-BRIDGE/
 │   └── adr/                                     los registros de decisiones aceptadas
 ├── AGENTS.md                                    reglas para quien cambia el repositorio
 ├── src/                                         la biblioteca y la línea de comandos
+├── tests/                                       el banco simulado: fallos del archivo exportado y la recuperación
 ├── Cargo.toml Cargo.lock deny.toml              paquete de Rust y política de dependencias
 ├── rust-toolchain.toml                          la toolchain de Rust fijada
 ├── tools/                                       la comprobación del repositorio, sus pruebas y las herramientas de las imágenes

@@ -46,7 +46,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des images et les 3 tests de la base tournent dans la CI et réussissent. |
-| Tests | 🟡 | Les 23 tests du code Rust et les 3 de la base réussissent sur un ordinateur. Ils n'utilisent que des courbes et des fiches faites par les tests eux-mêmes. |
+| Tests | 🟡 | Les 31 tests du code Rust et les 3 de la base réussissent sur un ordinateur. Ils n'utilisent que des courbes et des fiches faites par les tests eux-mêmes. |
 | Matériel réel | 🟠 | Non exécuté sur une machine ni une carte : rien ici n'a été essayé sur du matériel. |
 | Fonction prévue | 🟠 | Écrit : le format CSV avec unités, la fiche d'essai refusée sans instrument, la comparaison avec interpolation, écart, incertitude et un verdict dans la tolérance, hors tolérance ou non concluant. Non écrit : les fichiers de vrais instruments et le lien avec le passeport technique. |
 | Exigences | 🟠 | 5 des 6 exigences sont au stade de prototype ; le lien avec le passeport technique est seulement prévu. Aucune n'est validée et aucune tolérance n'a été fixée sur un vrai banc. |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 Tests
 
-La base a 3 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt, celui des images et ces tests.
+La base a 3 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt, celui des images et ces tests. Un banc simulé (`eh3d_lab_bridge::sim`, testé dans `tests/simulation.rs`) écrit le fichier qu'exporterait un instrument, avec un générateur à graine fixe, avec les défauts de ces fichiers - un pic, une dérive, une horloge qui recule, des points perdus, une unité perdue, une valeur en texte, un fichier coupé et un fichier vide - et les tests vérifient où chacun est refusé ou trouvé et que le fichier propre suivant est de nouveau jugé. Aucun instrument réel n'a été utilisé.
 
 ## 🏗️ Compilation et publication
 
@@ -114,6 +114,7 @@ EH3D-LAB-BRIDGE/
 │   └── adr/                                     les décisions acceptées
 ├── AGENTS.md                                    règles pour quiconque modifie le dépôt
 ├── src/                                         la bibliothèque et la ligne de commande
+├── tests/                                       le banc simulé : pannes du fichier exporté et reprise
 ├── Cargo.toml Cargo.lock deny.toml              paquet Rust et politique des dépendances
 ├── rust-toolchain.toml                          la toolchain Rust épinglée
 ├── tools/                                       le contrôle du dépôt, ses tests et les outils des images
