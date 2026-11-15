@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
   <img src="https://img.shields.io/badge/Tests-3-2EA043.svg" alt="Tests">
-  <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.3-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -29,7 +29,7 @@
 
 | | |
 |---|---|
-| Versão | `0.0.2` |
+| Versão | `0.0.3` |
 | Maturidade | Estrutura inicial |
 | Testes | 3 |
 | Tecnologias | Markdown, Python 3.10+ |
@@ -66,6 +66,14 @@ EH3D-LAB-BRIDGE faz parte da família PHOENIX da EH3D Fabrication Suite. O que f
 </p>
 
 Como as partes deste repositório se encaixam: quem o usa, o que contém e de que depende. A imagem é desenhada a partir de `docs/architecture.json` e verificada com o código.
+
+## 🖼️ Capturas de ecrã
+
+<p align="center">
+  <img src="images/screens/lab-bridge-01-cli.png" alt="A linha de comandos a importar uma curva medida e a compará-la com uma simulada" width="100%">
+</p>
+
+<p align="center"><em>A linha de comandos: `import` mostra o resumo e o SHA-256 de uma curva medida, e `compare` dá o desvio de cada ponto com a sua incerteza expandida e um veredicto, aqui dentro da tolerância de 0,1 definida no ficheiro de definições (código de saída 0).</em></p>
 
 ## 🚀 Início rápido
 

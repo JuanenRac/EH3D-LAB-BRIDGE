@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
   <img src="https://img.shields.io/badge/Tests-3-2EA043.svg" alt="Tests">
-  <img src="https://img.shields.io/badge/Version-0.0.2-0f6cbd.svg" alt="Version">
+  <img src="https://img.shields.io/badge/Version-0.0.3-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
 
@@ -29,7 +29,7 @@
 
 | | |
 |---|---|
-| バージョン | `0.0.2` |
+| バージョン | `0.0.3` |
 | 成熟度 | 足場 |
 | テスト | 3 |
 | 技術スタック | Markdown, Python 3.10+ |
@@ -66,6 +66,14 @@ EH3D-LAB-BRIDGE は EH3D Fabrication Suite の PHOENIX ファミリーの一部�
 </p>
 
 このリポジトリの各部分の関係：誰が使い、何を持ち、何に依存するか。図は `docs/architecture.json` から描かれ、コードと照合されます。
+
+## 🖼️ スクリーンショット
+
+<p align="center">
+  <img src="images/screens/lab-bridge-01-cli.png" alt="測定した曲線を取り込み、シミュレーションの曲線と比較するコマンドライン" width="100%">
+</p>
+
+<p align="center"><em>コマンドライン：`import` は測定した曲線の概要と SHA-256 を表示し、`compare` は各点の偏差と拡張不確かさ、判定を出します。ここでは設定ファイルの許容差 0.1 の範囲内です（終了コード 0）。</em></p>
 
 ## 🚀 クイックスタート
 
