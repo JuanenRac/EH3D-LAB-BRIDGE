@@ -15,6 +15,7 @@ pub mod config;
 pub mod curve;
 pub mod error;
 pub mod record;
+pub mod sim;
 
 pub use curve::Curve;
 pub use error::LbriError;

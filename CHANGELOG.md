@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **A simulated bench:** `sim::SimBench` writes the file an instrument would export (a true line plus noise from a seeded generator, so the same seed gives the same file) and damages it on request: a spike, a drift, a clock that steps back, lost points, a lost unit, a text value, a file cut short or an empty one. `tests/simulation.rs` checks that a clean file is read back and judged, that each failure is refused at its own line or found at its own point, that a record made from the clean file does not accept the cut one, and that the next clean file is judged again. The manifest now says `simulator` as its evidence. No real instrument has been used.
+
 ## [0.0.3] - Shared validation tools, a split CI and a pinned Rust toolchain
 
 - **A picture of the command line in the README:** `images/screens/lab-bridge-01-cli.png` shows `import` and `compare` on a measured and a simulated curve with the tolerance of the settings file, taken from the built program; it is shown in the eight READMEs.

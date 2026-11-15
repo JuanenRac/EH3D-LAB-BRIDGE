@@ -46,7 +46,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Verificações do repositório | 🟡 | A verificação do repositório, a das imagens e os 3 testes da base correm na CI e passam. |
-| Testes | 🟡 | Os 23 testes do código Rust e os 3 da base passam num computador. Usam apenas curvas e registos feitos pelos próprios testes. |
+| Testes | 🟡 | Os 31 testes do código Rust e os 3 da base passam num computador. Usam apenas curvas e registos feitos pelos próprios testes. |
 | Hardware real | 🟠 | Não foi executado em nenhuma máquina nem placa: nada aqui foi experimentado em hardware. |
 | Função planeada | 🟠 | Escrito: o formato CSV com unidades, o registo de ensaio rejeitado sem instrumento, a comparação com interpolação, desvio, incerteza e um veredicto dentro, fora ou inconclusivo. Por escrever: ficheiros de instrumentos reais e a ligação ao passaporte técnico. |
 | Requisitos | 🟠 | 5 dos 6 requisitos estão em protótipo; a ligação ao passaporte técnico está apenas planeada. Nenhum está validado e nenhuma tolerância foi definida numa bancada real. |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 Testes
 
-A base tem 3 testes (`python -I -m unittest discover -s tools -p "test_*.py"`), e passam. A CI executa a verificação do repositório, a das imagens e esses testes.
+A base tem 3 testes (`python -I -m unittest discover -s tools -p "test_*.py"`), e passam. A CI executa a verificação do repositório, a das imagens e esses testes. Uma bancada simulada (`eh3d_lab_bridge::sim`, testada em `tests/simulation.rs`) escreve o ficheiro que um instrumento exportaria, com um gerador de semente fixa, com as falhas que esses ficheiros têm - um pico, uma deriva, um relógio que recua, pontos perdidos, uma unidade perdida, um valor de texto, um ficheiro cortado e um ficheiro vazio - e os testes verificam onde cada uma é recusada ou encontrada e que o ficheiro limpo seguinte volta a ser avaliado. Não foi usado nenhum instrumento real.
 
 ## 🏗️ Compilação e publicação
 
@@ -114,6 +114,7 @@ EH3D-LAB-BRIDGE/
 │   └── adr/                                     os registos das decisões aceites
 ├── AGENTS.md                                    regras para quem altera o repositório
 ├── src/                                         a biblioteca e a linha de comandos
+├── tests/                                       a bancada simulada: falhas do ficheiro exportado e a recuperação
 ├── Cargo.toml Cargo.lock deny.toml              pacote Rust e política das dependências
 ├── rust-toolchain.toml                          a toolchain de Rust fixada
 ├── tools/                                       a verificação do repositório, os seus testes e as ferramentas das imagens

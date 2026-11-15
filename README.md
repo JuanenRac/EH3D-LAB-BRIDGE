@@ -46,7 +46,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Repository checks | 🟡 | The repository check, the check of the pictures and the 3 tests of the base run in CI and pass. |
-| Tests | 🟡 | 23 tests of the Rust code and the 3 of the base pass on a computer. They use only curves and records made by the tests themselves. |
+| Tests | 🟡 | 31 tests of the Rust code and the 3 of the base pass on a computer. They use only curves and records made by the tests themselves. |
 | Real hardware | 🟠 | Not run on any machine or board: nothing here has been tried on hardware. |
 | Planned function | 🟠 | Written: the CSV format with units, the test record that is rejected without an instrument, the comparison with interpolation, deviation, uncertainty and a verdict that is within, outside or inconclusive. Not written: files of real instruments and the link with the technical passport. |
 | Requirements | 🟠 | 5 of the 6 requirements are at prototype; the link with the technical passport is only planned. None is validated and no tolerance has been set from a real bench. |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 Testing
 
-The base has 3 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), and they pass. The CI runs the repository check, the check of the pictures and those tests.
+The base has 3 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), and they pass. The CI runs the repository check, the check of the pictures and those tests. A simulated bench (`eh3d_lab_bridge::sim`, tested in `tests/simulation.rs`) writes the file an instrument would export, from a seeded generator, with the failures such files have - a spike, a drift, a clock that steps back, lost points, a lost unit, a text value, a file cut short and an empty file - and the tests check where each is refused or found and that the next clean file is judged again. No real instrument has been used.
 
 ## 🏗️ Build & Release
 
@@ -114,6 +114,7 @@ EH3D-LAB-BRIDGE/
 │   └── adr/                                     the accepted decision records
 ├── AGENTS.md                                    rules for anyone who changes the repository
 ├── src/                                         the library and the command line
+├── tests/                                       the simulated bench: failures of the exported file and the recovery
 ├── Cargo.toml Cargo.lock deny.toml              Rust package and policy of the dependencies
 ├── rust-toolchain.toml                          the pinned Rust toolchain
 ├── tools/                                       the repository check, its tests and the picture tools
