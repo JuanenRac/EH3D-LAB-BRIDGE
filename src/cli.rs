@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 //! The command line. It is a thin layer: parsing the arguments and printing; the work lives in the other modules.
 //!
-//! Exit codes: 0 done and nothing found, 1 findings or a comparison that is outside the tolerance, 2 the input or the arguments are unusable.
+//! Exit codes: 0 done and nothing found, 1 findings or a comparison that is outside the tolerance, 2 the input or the arguments are unusable,
+//! 3 a comparison that could not be judged (no tolerance, an unknown uncertainty or an uncertainty too large to say; `exit_on_unjudged = no` turns this off).
 
 use crate::compare::{compare, Verdict};
 use crate::config::Config;
@@ -20,7 +21,7 @@ eh3d-lab-bridge [--config FILE] <command>
   record <record.json> [data.csv]          check a test record (instrument, conditions, quantity, hash); with the data file, check the hash too
 
 The tolerance and the uncertainties come only from the settings file; without a tolerance the comparison is not judged.
-Exit codes: 0 done, 1 findings or outside the tolerance, 2 unusable input.
+Exit codes: 0 done, 1 findings or outside the tolerance, 2 unusable input, 3 compared but not judged (see exit_on_unjudged).
 ";
 
 fn read_bytes(path: &Path, limit: u64) -> Result<Vec<u8>, LbriError> {
@@ -100,10 +101,16 @@ fn dispatch(args: &[String], out: &mut dyn Write) -> Result<i32, Option<LbriErro
                 "{}",
                 serde_json::to_string_pretty(&result).unwrap_or_default()
             );
-            Ok(if result.verdict == Verdict::Outside {
-                1
-            } else {
-                0
+            Ok(match result.verdict {
+                Verdict::Outside => 1,
+                Verdict::Within => 0,
+                Verdict::Inconclusive | Verdict::NotJudged => {
+                    if config.exit_on_unjudged {
+                        3
+                    } else {
+                        0
+                    }
+                }
             })
         }
         ["record", path] | ["record", path, _] => {
@@ -163,8 +170,14 @@ mod tests {
         let sim = file(&dir, "s.csv", "x[s],y[V]\n0,0\n10,10\n");
         let meas = file(&dir, "m.csv", "x[s],y[V]\n5,6\n");
         let (code, out, _) = run_args(&["compare", &meas, &sim]);
-        assert_eq!(code, 0);
+        assert_eq!(
+            code, 3,
+            "a comparison that was not judged must not look like a pass"
+        );
         assert!(out.contains("\"verdict\": \"not_judged\""), "{out}");
+        let off = file(&dir, "off.cfg", "exit_on_unjudged = no\n");
+        let (code, _, _) = run_args(&["--config", &off, "compare", &meas, &sim]);
+        assert_eq!(code, 0);
         let cfg = file(
             &dir,
             "c.cfg",
