@@ -22,6 +22,9 @@ pub struct Config {
     /// The smallest share (0 to 1) of the measured points that must lie inside the simulated curve for a comparison to be called within the tolerance; below it the verdict
     /// is inconclusive. 0 turns the check off.
     pub min_coverage: f64,
+    /// A comparison that could not be judged (no tolerance, an unknown uncertainty, or an uncertainty too large to say) makes `compare` exit with 3
+    /// instead of 0, so a script that only reads the exit code cannot take it for a pass. Off: such a comparison exits with 0, as it did before.
+    pub exit_on_unjudged: bool,
 }
 
 impl Default for Config {
@@ -34,6 +37,7 @@ impl Default for Config {
             measurement_uncertainty: None,
             simulation_uncertainty: None,
             min_coverage: 0.9,
+            exit_on_unjudged: true,
         }
     }
 }
@@ -87,6 +91,13 @@ impl Config {
                     }
                     config.min_coverage = n;
                 }
+                "exit_on_unjudged" => {
+                    config.exit_on_unjudged = match value {
+                        "yes" | "true" | "on" | "1" => true,
+                        "no" | "false" | "off" | "0" => false,
+                        _ => return Err(bad()),
+                    }
+                }
                 "coverage_factor" => {
                     let n = non_negative(value)?;
                     if n < 1.0 {
@@ -137,6 +148,7 @@ mod tests {
             "max_points = 0\n",
             "simulation_uncertainty = x\n",
             "min_coverage = 1.5\n",
+            "exit_on_unjudged = maybe\n",
         ] {
             assert!(
                 matches!(
