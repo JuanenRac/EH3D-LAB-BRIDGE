@@ -60,6 +60,8 @@ pub struct Comparison {
     pub tolerance: Option<f64>,
     /// The coverage factor used.
     pub coverage_factor: f64,
+    /// The share of the measured points that were compared (1 when none was left out; 0 when no point was compared).
+    pub coverage: f64,
     /// The judgement of the whole comparison.
     pub verdict: Verdict,
 }
@@ -133,6 +135,12 @@ pub fn compare(
             / n as f64)
             .sqrt()
     });
+    let measured_points = n + outside_range;
+    let coverage = if measured_points == 0 {
+        0.0
+    } else {
+        n as f64 / measured_points as f64
+    };
     let verdict = if n == 0 {
         Verdict::Inconclusive
     } else if points.iter().any(|p| p.verdict == Verdict::Outside) {
@@ -140,6 +148,9 @@ pub fn compare(
     } else if points.iter().any(|p| p.verdict == Verdict::NotJudged) {
         Verdict::NotJudged
     } else if points.iter().any(|p| p.verdict == Verdict::Inconclusive) {
+        Verdict::Inconclusive
+    } else if coverage < config.min_coverage {
+        // every compared point fits, but too many measured points were left out to say the whole curve does
         Verdict::Inconclusive
     } else {
         Verdict::Within
@@ -153,6 +164,7 @@ pub fn compare(
         rms_deviation,
         tolerance: config.tolerance,
         coverage_factor: config.coverage_factor,
+        coverage,
         verdict,
     })
 }
@@ -220,6 +232,49 @@ mod tests {
             ..Config::default()
         };
         assert_eq!(compare(&meas, &sim, &cfg).unwrap().verdict, Verdict::Within);
+    }
+
+    #[test]
+    fn a_curve_mostly_outside_the_simulation_is_never_within() {
+        let sim = curve("x[s],y[V]\n0,0\n1,1\n");
+        let mut text = String::from("x[s],y[V]\n0.5,0.5\n");
+        for i in 2..=11 {
+            text.push_str(&format!("{i},{i}\n"));
+        }
+        let meas = curve(&text);
+        let cfg = Config {
+            tolerance: Some(0.1),
+            measurement_uncertainty: Some(0.0),
+            simulation_uncertainty: Some(0.0),
+            ..Config::default()
+        };
+        let c = compare(&meas, &sim, &cfg).unwrap();
+        assert_eq!((c.points.len(), c.outside_range), (1, 10));
+        assert!((c.coverage - 1.0 / 11.0).abs() < 1e-12);
+        assert_eq!(c.points[0].verdict, Verdict::Within);
+        assert_eq!(c.verdict, Verdict::Inconclusive);
+        // with the check turned off the earlier verdict comes back
+        let off = Config {
+            min_coverage: 0.0,
+            ..cfg
+        };
+        assert_eq!(compare(&meas, &sim, &off).unwrap().verdict, Verdict::Within);
+    }
+
+    #[test]
+    fn a_point_beyond_the_tolerance_stays_outside_whatever_the_coverage() {
+        let sim = curve("x[s],y[V]\n0,0\n1,1\n");
+        let meas = curve("x[s],y[V]\n0.5,5\n7,7\n");
+        let cfg = Config {
+            tolerance: Some(0.1),
+            measurement_uncertainty: Some(0.0),
+            simulation_uncertainty: Some(0.0),
+            ..Config::default()
+        };
+        assert_eq!(
+            compare(&meas, &sim, &cfg).unwrap().verdict,
+            Verdict::Outside
+        );
     }
 
     #[test]

@@ -19,6 +19,9 @@ pub struct Config {
     pub measurement_uncertainty: Option<f64>,
     /// The uncertainty of the simulated curve, in the unit of y. None: unknown.
     pub simulation_uncertainty: Option<f64>,
+    /// The smallest share (0 to 1) of the measured points that must lie inside the simulated curve for a comparison to be called within the tolerance; below it the verdict
+    /// is inconclusive. 0 turns the check off.
+    pub min_coverage: f64,
 }
 
 impl Default for Config {
@@ -30,6 +33,7 @@ impl Default for Config {
             coverage_factor: 2.0,
             measurement_uncertainty: None,
             simulation_uncertainty: None,
+            min_coverage: 0.9,
         }
     }
 }
@@ -75,6 +79,13 @@ impl Config {
                 }
                 "simulation_uncertainty" => {
                     config.simulation_uncertainty = Some(non_negative(value)?)
+                }
+                "min_coverage" => {
+                    let n = non_negative(value)?;
+                    if n > 1.0 {
+                        return Err(bad());
+                    }
+                    config.min_coverage = n;
                 }
                 "coverage_factor" => {
                     let n = non_negative(value)?;
@@ -125,6 +136,7 @@ mod tests {
             "coverage_factor = 0.5\n",
             "max_points = 0\n",
             "simulation_uncertainty = x\n",
+            "min_coverage = 1.5\n",
         ] {
             assert!(
                 matches!(
