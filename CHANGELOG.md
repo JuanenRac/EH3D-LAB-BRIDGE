@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.4] - Clearer CSV errors and the place of the largest deviation
+
 - **The threat model says what the code already does:** the rows of `docs/THREAT_MODEL.md` that have a mitigation in the code and a test for it are marked `partial` and name the tests and what is still not covered; the rows without either stay `planned`.
 
 - **A comparison that could not be judged no longer exits with 0:** `compare` exits with 3 when the verdict is `not_judged` (no tolerance, an unknown uncertainty) or `inconclusive`, so a script that reads only the exit code cannot take it for a pass; the new setting `exit_on_unjudged = no` keeps the old exit code 0. Tests cover both.
