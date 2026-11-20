@@ -54,6 +54,8 @@ pub struct Comparison {
     pub outside_range: usize,
     /// The largest absolute deviation, when any point was compared.
     pub max_abs_deviation: Option<f64>,
+    /// The x where that largest deviation is (the first one when several are equal), when any point was compared.
+    pub max_abs_deviation_at: Option<f64>,
     /// The root mean square of the deviations, when any point was compared.
     pub rms_deviation: Option<f64>,
     /// The tolerance used, if one was set.
@@ -127,6 +129,13 @@ pub fn compare(
     }
     let n = points.len();
     let max_abs_deviation = points.iter().map(|p| p.deviation.abs()).reduce(f64::max);
+    let max_abs_deviation_at = points
+        .iter()
+        .fold(None, |best: Option<&Point>, p| match best {
+            Some(b) if b.deviation.abs() >= p.deviation.abs() => Some(b),
+            _ => Some(p),
+        })
+        .map(|p| p.x);
     let rms_deviation = (n > 0).then(|| {
         (points
             .iter()
@@ -161,6 +170,7 @@ pub fn compare(
         points,
         outside_range,
         max_abs_deviation,
+        max_abs_deviation_at,
         rms_deviation,
         tolerance: config.tolerance,
         coverage_factor: config.coverage_factor,
@@ -189,6 +199,23 @@ mod tests {
         }
         assert!((c.max_abs_deviation.unwrap() - 0.25).abs() < 1e-12);
         assert!((c.rms_deviation.unwrap() - 0.25).abs() < 1e-12);
+    }
+
+    #[test]
+    fn the_largest_deviation_says_where_it_is_and_the_first_wins_a_tie() {
+        let sim = curve("x[s],y[V]\n0,0\n10,0\n");
+        let meas = curve("x[s],y[V]\n1,0.1\n2,-0.4\n3,0.4\n4,0.2\n");
+        let c = compare(&meas, &sim, &Config::default()).unwrap();
+        assert_eq!(c.max_abs_deviation_at, Some(2.0));
+        assert!((c.max_abs_deviation.unwrap() - 0.4).abs() < 1e-12);
+        // a single point, and no point at all
+        let one = compare(&curve("x[s],y[V]\n5,0.3\n"), &sim, &Config::default()).unwrap();
+        assert_eq!(one.max_abs_deviation_at, Some(5.0));
+        let none = compare(&curve("x[s],y[V]\n50,0.3\n"), &sim, &Config::default()).unwrap();
+        assert_eq!(
+            (none.max_abs_deviation, none.max_abs_deviation_at),
+            (None, None)
+        );
     }
 
     #[test]

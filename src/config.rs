@@ -69,7 +69,13 @@ impl Config {
                 }
             };
             match key {
-                "max_file_bytes" => config.max_file_bytes = value.parse().map_err(|_| bad())?,
+                "max_file_bytes" => {
+                    let n: u64 = value.parse().map_err(|_| bad())?;
+                    if n == 0 {
+                        return Err(bad());
+                    }
+                    config.max_file_bytes = n;
+                }
                 "max_points" => {
                     let n: usize = value.parse().map_err(|_| bad())?;
                     if n == 0 {
@@ -120,6 +126,24 @@ impl Config {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_file_limit_of_zero_bytes_is_refused_and_a_positive_one_is_kept() {
+        assert!(matches!(
+            Config::parse("# limit\nmax_file_bytes = 0\n"),
+            Err(LbriError::ConfigBadValue { line: 2, .. })
+        ));
+        assert!(matches!(
+            Config::parse("max_file_bytes = -5\n"),
+            Err(LbriError::ConfigBadValue { line: 1, .. })
+        ));
+        assert_eq!(
+            Config::parse("max_file_bytes = 4096\n")
+                .unwrap()
+                .max_file_bytes,
+            4096
+        );
+    }
 
     #[test]
     fn there_is_no_default_tolerance() {

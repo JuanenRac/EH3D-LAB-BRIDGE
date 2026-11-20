@@ -55,6 +55,17 @@ impl Curve {
         })?;
         let cells: Vec<&str> = header.split(',').collect();
         if cells.len() != 2 && cells.len() != 3 {
+            // a file exported with another separator says so, instead of a count of columns that makes no sense
+            for (mark, name) in [(';', "semicolons"), ('\t', "tabs")] {
+                if header.contains(mark) {
+                    return Err(LbriError::BadCurve {
+                        line: hi + 1,
+                        what: format!(
+                            "the columns must be separated by commas, not by {name}; export the file again or replace them"
+                        ),
+                    });
+                }
+            }
             return Err(LbriError::BadCurve {
                 line: hi + 1,
                 what: "the header must have 2 or 3 columns: x[unit],y[unit] and optionally u[unit]"
@@ -190,6 +201,27 @@ mod tests {
 
     fn cfg() -> Config {
         Config::default()
+    }
+
+    #[test]
+    fn a_header_with_semicolons_or_tabs_says_the_columns_need_commas() {
+        for (text, name) in [
+            ("x[s];y[V]\n0;1\n", "semicolons"),
+            ("x[s];y[V];u[V]\n0;1;0.1\n", "semicolons"),
+            ("x[s]\ty[V]\n0\t1\n", "tabs"),
+        ] {
+            match Curve::from_csv(text, &cfg()) {
+                Err(LbriError::BadCurve { line: 1, what }) => {
+                    assert!(what.contains(name) && what.contains("commas"), "{what}")
+                }
+                other => panic!("{text:?}: {other:?}"),
+            }
+        }
+        // a header with the wrong number of columns and no other separator keeps its own message
+        match Curve::from_csv("x[s]\n0\n", &cfg()) {
+            Err(LbriError::BadCurve { what, .. }) => assert!(what.contains("2 or 3 columns")),
+            other => panic!("{other:?}"),
+        }
     }
 
     #[test]

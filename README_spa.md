@@ -46,7 +46,7 @@ Cada línea es una parte de este repositorio y la luz dice hasta dónde llega ho
 | Área | Estado | Qué significa aquí |
 |---|---|---|
 | Comprobaciones del repositorio | 🟡 | La comprobación del repositorio, la de las imágenes y las 3 pruebas de la base se ejecutan en el CI y pasan. |
-| Pruebas | 🟡 | Las 31 pruebas del código Rust y las 3 de la base pasan en un ordenador. Usan solo curvas y registros hechos por las propias pruebas. |
+| Pruebas | 🟡 | Las 36 pruebas del código Rust y las 3 de la base pasan en un ordenador. Usan solo curvas y registros hechos por las propias pruebas. |
 | Hardware real | 🟠 | No se ha ejecutado en ninguna máquina ni placa: nada de aquí se ha probado en hardware. |
 | Función planificada | 🟠 | Escrito: el formato CSV con unidades, el registro de ensayo que se rechaza sin instrumento, la comparación con interpolación, desviación, incertidumbre y un veredicto dentro, fuera o no concluyente. Sin escribir: ficheros de instrumentos reales y el enlace con el pasaporte técnico. |
 | Requisitos | 🟠 | 5 de los 6 requisitos están en prototipo; el enlace con el pasaporte técnico solo está planificado. Ninguno está validado y no se ha fijado ninguna tolerancia con un banco real. |
