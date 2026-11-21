@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Tests-3-2EA043.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-68-2EA043.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.4-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
@@ -31,7 +31,7 @@
 |---|---|
 | Version | `0.0.4` |
 | Maturité | Échafaudage |
-| Tests | 3 |
+| Tests | 68 |
 | Pile technique | Markdown, Python 3.10+ |
 | Sur du matériel réel | Pas encore exécuté sur du matériel |
 
@@ -45,8 +45,8 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
-| Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des images et les 3 tests de la base tournent dans la CI et réussissent. |
-| Tests | 🟡 | Les 45 tests du code Rust et les 3 de la base réussissent sur un ordinateur. Ils n'utilisent que des courbes et des fiches faites par les tests eux-mêmes. |
+| Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des images et les 68 tests de la base tournent dans la CI et réussissent. |
+| Tests | 🟡 | Les 63 tests du code Rust et les 68 de la base réussissent sur un ordinateur. Ils n'utilisent que des courbes et des fiches faites par les tests eux-mêmes. |
 | Matériel réel | 🟠 | Non exécuté sur une machine ni une carte : rien ici n'a été essayé sur du matériel. |
 | Fonction prévue | 🟠 | Écrit : le format CSV avec unités, la fiche d'essai refusée sans instrument, la comparaison avec interpolation, écart, incertitude et un verdict dans la tolérance, hors tolérance ou non concluant. Non écrit : les fichiers de vrais instruments et le lien avec le passeport technique. |
 | Exigences | 🟠 | 5 des 6 exigences sont au stade de prototype ; le lien avec le passeport technique est seulement prévu. Aucune n'est validée et aucune tolérance n'a été fixée sur un vrai banc. |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 Tests
 
-La base a 3 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt, celui des images et ces tests. Un banc simulé (`eh3d_lab_bridge::sim`, testé dans `tests/simulation.rs`) écrit le fichier qu'exporterait un instrument, avec un générateur à graine fixe, avec les défauts de ces fichiers - un pic, une dérive, une horloge qui recule, des points perdus, une unité perdue, une valeur en texte, un fichier coupé et un fichier vide - et les tests vérifient où chacun est refusé ou trouvé et que le fichier propre suivant est de nouveau jugé. Aucun instrument réel n'a été utilisé.
+La base a 68 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), et ils réussissent. La CI exécute le contrôle du dépôt, celui des images et ces tests. Un banc simulé (`eh3d_lab_bridge::sim`, testé dans `tests/simulation.rs`) écrit le fichier qu'exporterait un instrument, avec un générateur à graine fixe, avec les défauts de ces fichiers - un pic, une dérive, une horloge qui recule, des points perdus, une unité perdue, une valeur en texte, un fichier coupé et un fichier vide - et les tests vérifient où chacun est refusé ou trouvé et que le fichier propre suivant est de nouveau jugé. Aucun instrument réel n'a été utilisé.
 
 ## 🏗️ Compilation et publication
 

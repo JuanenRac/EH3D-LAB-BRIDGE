@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Tests-3-2EA043.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-68-2EA043.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.4-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
@@ -31,7 +31,7 @@
 |---|---|
 | 版本 | `0.0.4` |
 | 成熟度 | 脚手架 |
-| 测试 | 3 |
+| 测试 | 68 |
 | 技术栈 | Markdown, Python 3.10+ |
 | 真实硬件 | 尚未在硬件上运行 |
 
@@ -45,8 +45,8 @@
 
 | 领域 | 状态 | 在这里的含义 |
 |---|---|---|
-| 仓库检查 | 🟡 | 仓库检查、图片检查以及基础部分的 3 个测试都在 CI 中运行并通过。 |
-| 测试 | 🟡 | Rust 代码的 45 个测试和基础部分的 3 个测试在计算机上通过。它们只使用测试自己生成的曲线和记录。 |
+| 仓库检查 | 🟡 | 仓库检查、图片检查以及基础部分的 68 个测试都在 CI 中运行并通过。 |
+| 测试 | 🟡 | Rust 代码的 63 个测试和基础部分的 68 个测试在计算机上通过。它们只使用测试自己生成的曲线和记录。 |
 | 真实硬件 | 🟠 | 没有在任何机床或电路板上运行过：这里没有任何内容在硬件上试过。 |
 | 计划的功能 | 🟠 | 已编写：带单位的 CSV 格式、没有仪器就被拒绝的试验记录、带插值、偏差、不确定度的比较，以及范围内、范围外或无法判定的结论。未编写：真实仪器的文件以及与技术护照的连接。 |
 | 需求 | 🟠 | 6 项需求中有 5 项处于原型阶段；与技术护照的连接仅为计划。没有一项已验证，也没有根据真实试验台设定任何容差。 |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 测试
 
-基础部分有 3 个测试（`python -I -m unittest discover -s tools -p "test_*.py"`），并且都通过。CI 运行仓库检查、图片检查和这些测试。模拟台架（`eh3d_lab_bridge::sim`，测试在 `tests/simulation.rs`）用固定种子的生成器写出仪器会导出的文件，并带有这类文件常见的故障：尖峰、漂移、时钟倒退、丢失的点、丢失的单位、文本值、被截断的文件和空文件；测试检查每种故障在哪里被拒绝或发现，以及下一份干净的文件会重新被判定。没有使用任何真实仪器。
+基础部分有 68 个测试（`python -I -m unittest discover -s tools -p "test_*.py"`），并且都通过。CI 运行仓库检查、图片检查和这些测试。模拟台架（`eh3d_lab_bridge::sim`，测试在 `tests/simulation.rs`）用固定种子的生成器写出仪器会导出的文件，并带有这类文件常见的故障：尖峰、漂移、时钟倒退、丢失的点、丢失的单位、文本值、被截断的文件和空文件；测试检查每种故障在哪里被拒绝或发现，以及下一份干净的文件会重新被判定。没有使用任何真实仪器。
 
 ## 🏗️ 构建与发布
 
