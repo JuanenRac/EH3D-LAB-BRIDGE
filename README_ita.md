@@ -46,7 +46,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Controlli del repository | 🟡 | Il controllo del repository, quello delle immagini e i 3 test della base girano nella CI e passano. |
-| Test | 🟡 | I 36 test del codice Rust e i 3 della base passano su un computer. Usano solo curve e schede prodotte dai test stessi. |
+| Test | 🟡 | I 45 test del codice Rust e i 3 della base passano su un computer. Usano solo curve e schede prodotte dai test stessi. |
 | Hardware reale | 🟠 | Non eseguito su nessuna macchina né scheda: nulla qui è stato provato su hardware. |
 | Funzione pianificata | 🟠 | Scritto: il formato CSV con unità, la scheda di prova rifiutata senza strumento, il confronto con interpolazione, scostamento, incertezza e un verdetto entro, fuori o non conclusivo. Non scritto: i file di strumenti reali e il collegamento con il passaporto tecnico. |
 | Requisiti | 🟠 | 5 dei 6 requisiti sono a livello di prototipo; il collegamento con il passaporto tecnico è solo pianificato. Nessuno è validato e nessuna tolleranza è stata fissata su un banco reale. |
@@ -107,14 +107,14 @@ La versione sta nel file `VERSION` e in `eh3d.project.json`, e ogni versione ha 
 EH3D-LAB-BRIDGE/
 ├── docs/
 │   ├── architecture.json structure.json         i dati delle due immagini
-│   ├── SCOPE.md REQUIREMENTS.md                 ciò che è pianificato e i suoi requisiti
+│   ├── SCOPE.md REQUIREMENTS.md                 l'ambito e il registro dei requisiti con il test di ciascuno
 │   ├── DEPENDENCIES.md THREAT_MODEL.md          relazioni con altri repository e modello delle minacce
 │   ├── DECISIONS.md STATUS.md                   decisioni applicabili qui e stato onesto
 │   ├── NOT_YET.md RULES.md                      idee per dopo e regole per scrivere il codice
 │   └── adr/                                     i registri delle decisioni accettate
 ├── AGENTS.md                                    regole per chi modifica il repository
 ├── src/                                         la libreria e la riga di comando
-├── tests/                                       il banco simulato: guasti del file esportato e il ripristino
+├── tests/                                       banco simulato e test del registro
 ├── Cargo.toml Cargo.lock deny.toml              pacchetto Rust e politica delle dipendenze
 ├── rust-toolchain.toml                          la toolchain Rust fissata
 ├── tools/                                       il controllo del repository, i suoi test e gli strumenti delle immagini
@@ -152,7 +152,11 @@ Il README e i testi esistono in inglese, spagnolo, francese, italiano, tedesco, 
 
 * [Le convenzioni della suite](https://github.com/JuanenRac/EH3D-DOCS/blob/main/docs/CONVENTIONS.md)
 * [Registro delle modifiche](CHANGELOG.md)
-* [Ambito, requisiti, dipendenze, modello delle minacce e decisioni](docs/SCOPE.md)
+* [Ambito](docs/SCOPE.md): a cosa serve il programma, cosa non farà e cosa non decide mai.
+* [Requisiti](docs/REQUIREMENTS.md): il registro delle capacità, lo stato di ciascuna e il test che la mostra.
+* [Stato](docs/STATUS.md): cosa esiste, cosa manca e cosa è ancora aperto.
+* [Non ancora](docs/NOT_YET.md): buone idee lasciate fuori da questa versione.
+* [Regole per modificare il repository](AGENTS.md): le regole per chi modifica il repository.
 
 ## 🤝 Contribuire e comunità
 

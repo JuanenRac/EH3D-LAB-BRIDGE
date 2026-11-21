@@ -37,14 +37,14 @@
           "name": "SCOPE.md  REQUIREMENTS.md",
           "tree_name": "SCOPE.md REQUIREMENTS.md",
           "desc": {
-            "en": "what is planned and its requirements",
-            "es": "lo planificado y sus requisitos",
-            "de": "das Geplante und seine Anforderungen",
-            "fr": "ce qui est prévu et ses exigences",
-            "it": "ciò che è pianificato e i suoi requisiti",
-            "ja": "計画内容とその要件",
-            "zh": "计划内容及其需求",
-            "pt": "o que está planeado e os seus requisitos"
+            "en": "the scope, and the register of requirements with the test of each",
+            "es": "el alcance y el registro de requisitos con la prueba de cada uno",
+            "de": "der Umfang und das Anforderungsregister mit dem Test jeder Anforderung",
+            "fr": "le périmètre et le registre des exigences avec le test de chacune",
+            "it": "l'ambito e il registro dei requisiti con il test di ciascuno",
+            "ja": "範囲と、要件一覧およびそれぞれのテスト",
+            "zh": "范围，以及带有各项测试的需求登记表",
+            "pt": "o âmbito e o registo de requisitos com o teste de cada um"
           }
         },
         {
@@ -157,14 +157,14 @@
         },
         {
           "desc": {
-            "en": "the simulated bench: failures of the exported file and the recovery",
-            "es": "el banco simulado: fallos del archivo exportado y la recuperación",
-            "de": "die simulierte Messbank: Fehler der exportierten Datei und die Wiederherstellung",
-            "fr": "le banc simulé : pannes du fichier exporté et reprise",
-            "it": "il banco simulato: guasti del file esportato e il ripristino",
-            "ja": "模擬ベンチ：出力ファイルの不具合と復旧",
-            "zh": "模拟台架：导出文件的故障与恢复",
-            "pt": "a bancada simulada: falhas do ficheiro exportado e a recuperação"
+            "en": "simulated bench and the register check",
+            "es": "banco simulado y prueba del registro",
+            "de": "simulierte Messbank, Registertest",
+            "fr": "banc simulé et test du registre",
+            "it": "banco simulato e test del registro",
+            "ja": "模擬ベンチと一覧のテスト",
+            "zh": "模拟台架与登记表测试",
+            "pt": "bancada simulada e teste do registo"
           },
           "name": "tests/"
         },

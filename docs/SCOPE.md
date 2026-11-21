@@ -1,33 +1,37 @@
 # EH3D-LAB-BRIDGE: scope
 
-Status: **early code**. EH3D-LAB-BRIDGE has a library and a command line; most of what this page lists is still planned. This page says what it is meant to do, what it will not do, and where it sits. Nothing has been run on real data.
+Status: **early code**. EH3D-LAB-BRIDGE is a library and a command line that read a measured curve from one defined CSV format, check the record of a test and compare the curve with a simulated one. It has been tried on data made by its own tests only. This page says what it is for, what it will not do and where it sits among the other programs of the suite.
 
 ## Purpose
 
-EH3D-LAB-BRIDGE is planned as a module that correlates simulation datasets with real laboratory measurements.
+The bridge between the simulation and the laboratory: it correlates the data sets of a simulation with real measurements, keeps the configuration of each test so that a person can repeat it, and reports the deviation of every point with its uncertainty.
 
-Correlates simulation datasets with real laboratory measurements and keeps the configuration of each test.
+## What it does
 
-## What it is planned to do
-
-* Import data from oscilloscopes, network analysers and programmable power supplies, starting with well-defined file formats and leaving instrument protocols for later.
-* Compare measurements with simulated curves and report the deviation with its uncertainty.
-* Store the configuration of each test.
-* Keep a measurement record: instrument, condition, result and comparison with the simulation, with units, estimated error and sensitivity.
+* Reads a measured curve from one defined CSV format whose header names the unit of each column (optionally with an uncertainty column), with a byte order mark, blank lines and CRLF accepted, and writes it back exactly.
+* Refuses a bad file with the line, a header that uses semicolons or tabs (it says the columns need commas), and too many points.
+* Checks the record of a test: the instrument, the conditions, the quantity and the SHA-256 of the data; a record without one of them is rejected with a stable code, and changed data gives a hash mismatch.
+* Compares the measured curve with a simulated one by linear interpolation, giving the deviation of every point, where the largest deviation is, and its expanded uncertainty, and judges it only against a tolerance that the settings give (there is no default).
+* Counts the points outside the range of the simulation instead of inventing values, and refuses curves in different units.
+* Runs a simulated bench whose exported file is damaged on purpose (a spike, a drift, a clock that steps back, lost points, a lost unit, a cut file).
 
 ## What it will not do
 
-* No live control of instruments in the first version.
-* No calibration claims.
-* No tolerance numbers are invented: they are set after the author's bench has been characterised.
-
-## Planned shape
-
-A library without a window, written in Rust, with a command-line interface and, where it applies, a kind of task for the server. Programs of the suite exchange work through project files or through the server, never by depending on each other.
-
-The package is a single crate (a library and a command line, no window) with `import`, `compare` and `record`; a curve is a CSV file and a test record is a JSON file. Files written by real instruments, the control of instruments and the link with the technical passport are not written.
+* It does not control any instrument: no live control in the first version.
+* It makes no calibration claim.
+* It invents no tolerance number: they are set after the bench of the author has been characterised.
+* It does not read the files of real instruments yet (see `REQUIREMENTS.md`).
+* It does not claim that anything was proven with a real bench: the evidence of every capability is `simulator` or `host-test`.
 
 ## Where it sits
 
-It belongs to the PHOENIX family of the EH3D Fabrication Suite: independent repositories that relate through versioned contracts. The design tool (EH3D-PHOENIX-PCB) does not depend at build time on the repositories that depend on it.
-See DEPENDENCIES.md for the relations, REQUIREMENTS.md for the requirements and STATUS.md for the honest state.
+* **It reads:** a curve (CSV with units in the header), the record of a test (JSON) and a settings file (the tolerance, the coverage factor, default uncertainties and the size limits).
+* **It writes:** the summary, the hash and the comparison it is asked to print, to the standard output; it never writes to the files it reads.
+* **It is read by:** nothing reads it yet: the technical passport will cite a record by hash once the link is written.
+* **It depends on:** nothing of the suite at build time; the simulation results come from EH3D-PHOENIX-PCB and the container from EH3D-COMMON.
+
+## What it never decides
+
+Whether a measurement is right, whether a bench is calibrated, and the limits, the interlocks and the emergency stop of any machine, belong to the person who runs the bench. The result of a comparison is a statement about two curves and their stated uncertainties; it is not a validation of a design. Nothing here starts motion.
+
+The requirements of the program, with the state of each and the test that shows it, are in `REQUIREMENTS.md`; the state in a paragraph is in `STATUS.md`.

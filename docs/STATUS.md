@@ -2,21 +2,26 @@
 
 ## Current state
 
-EH3D-LAB-BRIDGE is early code. Version 0.0.1 holds the base that every repository of the suite carries (manifest, README files in eight languages, changelog, CI, shared checks) and the written scope, requirements, dependencies, threat model and decisions. It also has a Rust library and a command line that read a measured curve from one defined CSV format (a header that names the unit of each column, optionally with an uncertainty column), check a test record (instrument, conditions, quantity and the SHA-256 of the data) and compare the measured curve with a simulated one, giving the deviation of every point with its expanded uncertainty. They have run only on data made by their own tests. Nothing has been run on a machine with real data, and no requirement is validated.
+EH3D-LAB-BRIDGE is early code on a computer: a Rust library and a command line (`import`, `compare`, `record`) that read a measured curve from one defined CSV format, check the record of a test and compare the measured curve with a simulated one, giving the deviation of every point with its expanded uncertainty. A simulated bench damages the exported file in several ways. All of it has run only on data made by its own tests; the files of real instruments, the control of instruments and the link with the technical passport are not written, and no requirement is validated.
 
 ## Capabilities
 
-The official state of each capability is in REQUIREMENTS.md: 6 requirements: 5 `prototype` and 1 `planned` (LBRI-006). This page never states a state that REQUIREMENTS.md does not.
+The official state of each capability is in `REQUIREMENTS.md`. The register has 31 requirements: 25 implemented, 4 prototype, 2 planned and 0 validated. By progress: 25 done, 4 partial, 1 pending and 1 blocked. This page never states a state that `REQUIREMENTS.md` does not.
 
 ## Open questions
 
 * Which instrument file formats come first.
+* How the tolerance and the uncertainty are characterised once the bench of the author exists.
 
-## Needs from other repositories
+## What it needs from other repositories
 
-* EH3D-PHOENIX-PCB: simulation results
-* EH3D-COMMON: container
+* EH3D-PHOENIX-PCB: the simulation results.
+* EH3D-COMMON: the container.
+* EH3D-PROJECT-PASSPORT: the passport that will cite a record.
 
 ## Known technical debt and omitted tests
 
-36 tests of the Rust code and the 3 of the base; the Rust tests build their own curves and records and never touch real data. Not tested: files from real instruments. `cargo deny` is not run yet.
+* 45 tests of the Rust code (nine of them keep this register true) and the 3 of the base; the Rust tests build their own curves and records and never touch real data.
+* Eight of the tests run the simulated bench (`tests/simulation.rs`).
+* Not tested: files from real instruments.
+* `cargo deny` is not run yet.
