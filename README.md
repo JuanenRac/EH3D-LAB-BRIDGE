@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Tests-3-2EA043.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-68-2EA043.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.4-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
@@ -31,7 +31,7 @@
 |---|---|
 | Version | `0.0.4` |
 | Maturity | Scaffolding |
-| Tests | 3 |
+| Tests | 68 |
 | Stack | Markdown, Python 3.10+ |
 | On real hardware | Not run on hardware yet |
 
@@ -45,8 +45,8 @@ Each line is one part of this repository and the light says how far it is today.
 
 | Area | State | What it means here |
 |---|---|---|
-| Repository checks | 🟡 | The repository check, the check of the pictures and the 3 tests of the base run in CI and pass. |
-| Tests | 🟡 | 45 tests of the Rust code and the 3 of the base pass on a computer. They use only curves and records made by the tests themselves. |
+| Repository checks | 🟡 | The repository check, the check of the pictures and the 68 tests of the base run in CI and pass. |
+| Tests | 🟡 | 63 tests of the Rust code and the 68 of the base pass on a computer. They use only curves and records made by the tests themselves. |
 | Real hardware | 🟠 | Not run on any machine or board: nothing here has been tried on hardware. |
 | Planned function | 🟠 | Written: the CSV format with units, the test record that is rejected without an instrument, the comparison with interpolation, deviation, uncertainty and a verdict that is within, outside or inconclusive. Not written: files of real instruments and the link with the technical passport. |
 | Requirements | 🟠 | 5 of the 6 requirements are at prototype; the link with the technical passport is only planned. None is validated and no tolerance has been set from a real bench. |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 Testing
 
-The base has 3 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), and they pass. The CI runs the repository check, the check of the pictures and those tests. A simulated bench (`eh3d_lab_bridge::sim`, tested in `tests/simulation.rs`) writes the file an instrument would export, from a seeded generator, with the failures such files have - a spike, a drift, a clock that steps back, lost points, a lost unit, a text value, a file cut short and an empty file - and the tests check where each is refused or found and that the next clean file is judged again. No real instrument has been used.
+The base has 68 tests (`python -I -m unittest discover -s tools -p "test_*.py"`), and they pass. The CI runs the repository check, the check of the pictures and those tests. A simulated bench (`eh3d_lab_bridge::sim`, tested in `tests/simulation.rs`) writes the file an instrument would export, from a seeded generator, with the failures such files have - a spike, a drift, a clock that steps back, lost points, a lost unit, a text value, a file cut short and an empty file - and the tests check where each is refused or found and that the next clean file is judged again. No real instrument has been used.
 
 ## 🏗️ Build & Release
 

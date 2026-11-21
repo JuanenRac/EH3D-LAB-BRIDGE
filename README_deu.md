@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Tests-3-2EA043.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-68-2EA043.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.4-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
@@ -31,7 +31,7 @@
 |---|---|
 | Version | `0.0.4` |
 | Reifegrad | Gerüst |
-| Tests | 3 |
+| Tests | 68 |
 | Technologie-Stack | Markdown, Python 3.10+ |
 | Auf echter Hardware | Noch nicht auf Hardware ausgeführt |
 
@@ -45,8 +45,8 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
-| Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Bilder und die 3 Tests der Basis laufen in der CI und bestehen. |
-| Tests | 🟡 | Die 45 Tests des Rust-Codes und die 3 der Basis bestehen auf einem Rechner. Sie verwenden nur Kurven und Protokolle der Tests selbst. |
+| Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Bilder und die 68 Tests der Basis laufen in der CI und bestehen. |
+| Tests | 🟡 | Die 63 Tests des Rust-Codes und die 68 der Basis bestehen auf einem Rechner. Sie verwenden nur Kurven und Protokolle der Tests selbst. |
 | Echte Hardware | 🟠 | Auf keiner Maschine und keiner Platine ausgeführt: nichts hier wurde auf Hardware ausprobiert. |
 | Geplante Funktion | 🟠 | Geschrieben: das CSV-Format mit Einheiten, das ohne Gerät abgelehnte Prüfprotokoll, der Vergleich mit Interpolation, Abweichung, Unsicherheit und einem Urteil innerhalb, außerhalb oder nicht eindeutig. Nicht geschrieben: Dateien echter Messgeräte und die Verbindung zum technischen Pass. |
 | Anforderungen | 🟠 | 5 der 6 Anforderungen sind im Prototyp; die Verbindung zum technischen Pass ist nur geplant. Keine ist validiert, und an einem echten Messplatz wurde keine Toleranz festgelegt. |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 Tests
 
-Die Basis hat 3 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung, die Prüfung der Bilder und diese Tests aus. Eine simulierte Messbank (`eh3d_lab_bridge::sim`, getestet in `tests/simulation.rs`) schreibt mit einem Generator mit festem Startwert die Datei, die ein Messgerät exportieren würde, samt den Fehlern solcher Dateien - eine Spitze, eine Drift, eine zurückspringende Uhr, verlorene Punkte, eine verlorene Einheit, ein Textwert, eine abgeschnittene und eine leere Datei - und die Tests prüfen, wo jeder abgelehnt oder gefunden wird und dass die nächste saubere Datei wieder beurteilt wird. Es wurde kein echtes Messgerät benutzt.
+Die Basis hat 68 Tests (`python -I -m unittest discover -s tools -p "test_*.py"`), und sie bestehen. Die CI führt die Repository-Prüfung, die Prüfung der Bilder und diese Tests aus. Eine simulierte Messbank (`eh3d_lab_bridge::sim`, getestet in `tests/simulation.rs`) schreibt mit einem Generator mit festem Startwert die Datei, die ein Messgerät exportieren würde, samt den Fehlern solcher Dateien - eine Spitze, eine Drift, eine zurückspringende Uhr, verlorene Punkte, eine verlorene Einheit, ein Textwert, eine abgeschnittene und eine leere Datei - und die Tests prüfen, wo jeder abgelehnt oder gefunden wird und dass die nächste saubere Datei wieder beurteilt wird. Es wurde kein echtes Messgerät benutzt.
 
 ## 🏗️ Build und Veröffentlichung
 

@@ -288,4 +288,156 @@ mod tests {
         assert_eq!(c.at(-0.1), None);
         assert_eq!(c.at(4.1), None);
     }
+
+    fn lcg(seed: &mut u64) -> u64 {
+        *seed = (*seed * 1_103_515_245 + 12_345) % 2_147_483_648;
+        *seed >> 8
+    }
+
+    fn seeded_curve(points: usize, seed: u64, with_u: bool) -> Curve {
+        let mut state = seed;
+        let (mut x, mut y, mut u) = (Vec::new(), Vec::new(), Vec::new());
+        let mut at = 0.0_f64;
+        for _ in 0..points {
+            at += 0.001 + (lcg(&mut state) % 1000) as f64 / 7.0;
+            x.push(at);
+            y.push((lcg(&mut state) % 100_000) as f64 / 13.0 - 3000.0);
+            u.push((lcg(&mut state) % 1000) as f64 / 1000.0);
+        }
+        Curve {
+            x_unit: "s".into(),
+            y_unit: "V".into(),
+            x,
+            y,
+            u: if with_u { Some(u) } else { None },
+        }
+    }
+
+    fn bad_line(text: &str) -> usize {
+        match Curve::from_csv(text, &cfg()) {
+            Err(LbriError::BadCurve { line, .. }) => line,
+            other => panic!("{text:?} gave {other:?}"),
+        }
+    }
+
+    #[test]
+    fn a_seeded_curve_written_and_read_again_is_the_same_curve_with_and_without_uncertainty() {
+        for (seed, with_u) in [(1_u64, false), (2, true), (3, true), (4, false)] {
+            let curve = seeded_curve(50, seed, with_u);
+            let text = curve.to_csv();
+            let again = Curve::from_csv(&text, &cfg()).unwrap();
+            assert_eq!(again, curve, "seed {seed}");
+            assert_eq!(again.to_csv(), text, "seed {seed}");
+        }
+    }
+
+    #[test]
+    fn twenty_thousand_points_are_read_without_a_panic() {
+        let curve = seeded_curve(20_000, 8, true);
+        let again = Curve::from_csv(&curve.to_csv(), &cfg()).unwrap();
+        assert_eq!(again.x.len(), 20_000);
+        assert_eq!(again, curve);
+    }
+
+    #[test]
+    fn a_curve_of_one_point_is_valid_and_answers_only_at_that_point() {
+        let c = Curve::from_csv("x[s],y[V]\n2.5,7.0\n", &cfg()).unwrap();
+        assert_eq!(c.at(2.5), Some(7.0));
+        assert_eq!(c.at(2.4999), None);
+        assert_eq!(c.at(2.5001), None);
+        assert_eq!(c.u_at(2.5), None);
+    }
+
+    #[test]
+    fn the_curve_answers_exactly_on_every_node_and_between_the_neighbours_elsewhere() {
+        let c = seeded_curve(40, 5, true);
+        for i in 0..c.x.len() {
+            assert_eq!(c.at(c.x[i]), Some(c.y[i]));
+            assert_eq!(c.u_at(c.x[i]), c.u.as_ref().map(|u| u[i]));
+        }
+        for i in 1..c.x.len() {
+            let mid = (c.x[i - 1] + c.x[i]) / 2.0;
+            let v = c.at(mid).unwrap();
+            let (lo, hi) = (c.y[i - 1].min(c.y[i]), c.y[i - 1].max(c.y[i]));
+            assert!(v >= lo - 1e-9 && v <= hi + 1e-9, "{i}: {v} {lo} {hi}");
+        }
+    }
+
+    #[test]
+    fn a_question_that_is_not_a_number_or_is_outside_the_curve_has_no_answer() {
+        let c = seeded_curve(5, 6, false);
+        assert_eq!(c.at(f64::NAN), None);
+        assert_eq!(c.at(f64::INFINITY), None);
+        assert_eq!(c.at(f64::NEG_INFINITY), None);
+        assert_eq!(c.at(c.x[0] - 1e-9), None);
+        assert_eq!(c.at(c.x[4] + 1e-9), None);
+    }
+
+    #[test]
+    fn the_unit_is_kept_with_its_spaces_trimmed_and_in_any_script() {
+        let c = Curve::from_csv("x[ \u{b5}s ],y[ \u{3a9} ]\n0,1\n1,2\n", &cfg()).unwrap();
+        assert_eq!(c.x_unit, "\u{b5}s");
+        assert_eq!(c.y_unit, "\u{3a9}");
+        assert!(c.to_csv().starts_with("x[\u{b5}s],y[\u{3a9}]\n"));
+    }
+
+    #[test]
+    fn each_kind_of_bad_file_is_refused_with_the_line_of_the_fault() {
+        assert_eq!(bad_line(""), 0);
+        assert_eq!(bad_line("\n\n  \n"), 0);
+        assert_eq!(bad_line("x[s],y[V]\n"), 0);
+        assert_eq!(bad_line("x[s]\n0\n"), 1);
+        assert_eq!(bad_line("x[s],y[V],u[V],z[V]\n0,1,2,3\n"), 1);
+        assert_eq!(bad_line("x[],y[V]\n0,1\n"), 1);
+        assert_eq!(bad_line("t[s],y[V]\n0,1\n"), 1);
+        assert_eq!(bad_line("x[s],y[V],u[A]\n0,1,2\n"), 1);
+        assert_eq!(bad_line("x[s],y[V]\n0,abc\n"), 2);
+        assert_eq!(bad_line("x[s],y[V]\n0,1\n1\n"), 3);
+        assert_eq!(bad_line("x[s],y[V]\n0,1\n0,2\n"), 3);
+        assert_eq!(bad_line("x[s],y[V]\n0,1\n-1,2\n"), 3);
+        assert_eq!(bad_line("x[s],y[V],u[V]\n0,1,-0.5\n"), 2);
+    }
+
+    #[test]
+    fn a_value_that_is_not_finite_is_refused_however_it_is_spelt() {
+        for bad in ["NaN", "nan", "inf", "-inf", "infinity", "1e999"] {
+            let text = format!("x[s],y[V]\n0,{bad}\n");
+            assert_eq!(bad_line(&text), 2, "{bad}");
+        }
+    }
+
+    #[test]
+    fn the_first_blank_lines_do_not_move_the_line_numbers_of_the_faults() {
+        assert_eq!(bad_line("\n\nx[s],y[V]\n0,1\n0,2\n"), 5);
+    }
+
+    #[test]
+    fn exactly_the_most_points_is_read_and_one_more_is_not() {
+        let config = Config {
+            max_points: 3,
+            ..Config::default()
+        };
+        let three = "x[s],y[V]\n0,1\n1,2\n2,3\n";
+        let four = "x[s],y[V]\n0,1\n1,2\n2,3\n3,4\n";
+        assert!(Curve::from_csv(three, &config).is_ok());
+        assert!(matches!(
+            Curve::from_csv(four, &config),
+            Err(LbriError::TooLarge { .. })
+        ));
+    }
+
+    #[test]
+    fn the_message_of_a_bad_curve_carries_the_stable_code_and_the_line() {
+        let text = Curve::from_csv("x[s],y[V]\n0,1\n0,2\n", &cfg())
+            .unwrap_err()
+            .to_string();
+        assert!(text.contains("PHOENIX-LBRI-"), "{text}");
+        assert!(text.contains("line 3"), "{text}");
+    }
+
+    #[test]
+    fn a_zero_uncertainty_is_accepted_and_kept() {
+        let c = Curve::from_csv("x[s],y[V],u[V]\n0,1,0\n1,2,0.0\n", &cfg()).unwrap();
+        assert_eq!(c.u, Some(vec![0.0, 0.0]));
+    }
 }

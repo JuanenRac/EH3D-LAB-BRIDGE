@@ -21,7 +21,7 @@ The official state of each capability is in `REQUIREMENTS.md`. The register has 
 
 ## Known technical debt and omitted tests
 
-* 45 tests of the Rust code (nine of them keep this register true) and the 3 of the base; the Rust tests build their own curves and records and never touch real data.
+* 63 tests of the Rust code (nine of them keep this register true) and the 68 of the base (65 of them test the shared tools of the base); the Rust tests build their own curves and records and never touch real data.
 * Eight of the tests run the simulated bench (`tests/simulation.rs`).
 * Not tested: files from real instruments.
 * `cargo deny` is not run yet.

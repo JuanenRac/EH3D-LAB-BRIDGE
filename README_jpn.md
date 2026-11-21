@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Tests-3-2EA043.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-68-2EA043.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.4-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
@@ -31,7 +31,7 @@
 |---|---|
 | バージョン | `0.0.4` |
 | 成熟度 | 足場 |
-| テスト | 3 |
+| テスト | 68 |
 | 技術スタック | Markdown, Python 3.10+ |
 | 実機での動作 | まだハードウェアでは実行していません |
 
@@ -45,8 +45,8 @@
 
 | 領域 | 状態 | ここでの意味 |
 |---|---|---|
-| リポジトリ チェック | 🟡 | リポジトリ チェック、画像のチェック、基盤の 3 件のテストは CI で実行され、通っています。 |
-| テスト | 🟡 | Rust コードの 45 件と基盤の 3 件のテストがコンピューター上で成功します。使うのはテスト自身が作った曲線と記録だけです。 |
+| リポジトリ チェック | 🟡 | リポジトリ チェック、画像のチェック、基盤の 68 件のテストは CI で実行され、通っています。 |
+| テスト | 🟡 | Rust コードの 63 件と基盤の 68 件のテストがコンピューター上で成功します。使うのはテスト自身が作った曲線と記録だけです。 |
 | 実機 | 🟠 | どの機械やボードでも実行していません。ここにあるものは、ハードウェア上で試していません。 |
 | 計画中の機能 | 🟠 | 作成済み：単位つきの CSV 形式、計測器がないと拒否される試験記録、補間・偏差・不確かさを使った比較と、範囲内・範囲外・判定不能の結論。未作成：実機の計測器のファイル、技術パスポートとの連携。 |
 | 要件 | 🟠 | 6 件の要件のうち 5 件はプロトタイプです。技術パスポートとの連携は計画のみです。検証済みのものはなく、実際のベンチから許容値を決めてもいません。 |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 テスト
 
-基盤には 3 件のテストがあり（`python -I -m unittest discover -s tools -p "test_*.py"`）、通っています。CI はリポジトリ チェック、画像のチェック、これらのテストを実行します。模擬ベンチ（`eh3d_lab_bridge::sim`、テストは `tests/simulation.rs`）は、固定シードのジェネレーターで、計測器が出力するファイルを、そのようなファイルに起こる不具合（スパイク、ドリフト、時計の逆戻り、欠落した点、失われた単位、文字列の値、途中で切れたファイル、空のファイル）付きで書き出します。テストは、それぞれがどこで拒否または検出されるか、次の正常なファイルが再び判定されることを確認します。実際の計測器は使っていません。
+基盤には 68 件のテストがあり（`python -I -m unittest discover -s tools -p "test_*.py"`）、通っています。CI はリポジトリ チェック、画像のチェック、これらのテストを実行します。模擬ベンチ（`eh3d_lab_bridge::sim`、テストは `tests/simulation.rs`）は、固定シードのジェネレーターで、計測器が出力するファイルを、そのようなファイルに起こる不具合（スパイク、ドリフト、時計の逆戻り、欠落した点、失われた単位、文字列の値、途中で切れたファイル、空のファイル）付きで書き出します。テストは、それぞれがどこで拒否または検出されるか、次の正常なファイルが再び判定されることを確認します。実際の計測器は使っていません。
 
 ## 🏗️ ビルドとリリース
 

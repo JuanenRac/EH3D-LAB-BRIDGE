@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/License-GPL%203.0--or--later-blue.svg" alt="GPL 3.0 or later">
   <img src="https://img.shields.io/badge/Stack-Markdown%20%2B%20Python-blue.svg" alt="Markdown and Python">
   <img src="https://img.shields.io/badge/Languages-8-00E5FF.svg" alt="Languages">
-  <img src="https://img.shields.io/badge/Tests-3-2EA043.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/Tests-68-2EA043.svg" alt="Tests">
   <img src="https://img.shields.io/badge/Version-0.0.4-0f6cbd.svg" alt="Version">
   <img src="https://img.shields.io/badge/Maturity-scaffolding-FFB020.svg" alt="Maturity">
 </p>
@@ -31,7 +31,7 @@
 |---|---|
 | Versione | `0.0.4` |
 | Maturità | Impalcatura |
-| Test | 3 |
+| Test | 68 |
 | Stack tecnologico | Markdown, Python 3.10+ |
 | Su hardware reale | Non ancora eseguito su hardware |
 
@@ -45,8 +45,8 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 
 | Area | Stato | Cosa significa qui |
 |---|---|---|
-| Controlli del repository | 🟡 | Il controllo del repository, quello delle immagini e i 3 test della base girano nella CI e passano. |
-| Test | 🟡 | I 45 test del codice Rust e i 3 della base passano su un computer. Usano solo curve e schede prodotte dai test stessi. |
+| Controlli del repository | 🟡 | Il controllo del repository, quello delle immagini e i 68 test della base girano nella CI e passano. |
+| Test | 🟡 | I 63 test del codice Rust e i 68 della base passano su un computer. Usano solo curve e schede prodotte dai test stessi. |
 | Hardware reale | 🟠 | Non eseguito su nessuna macchina né scheda: nulla qui è stato provato su hardware. |
 | Funzione pianificata | 🟠 | Scritto: il formato CSV con unità, la scheda di prova rifiutata senza strumento, il confronto con interpolazione, scostamento, incertezza e un verdetto entro, fuori o non conclusivo. Non scritto: i file di strumenti reali e il collegamento con il passaporto tecnico. |
 | Requisiti | 🟠 | 5 dei 6 requisiti sono a livello di prototipo; il collegamento con il passaporto tecnico è solo pianificato. Nessuno è validato e nessuna tolleranza è stata fissata su un banco reale. |
@@ -88,7 +88,7 @@ python -I -m unittest discover -s tools -p "test_*.py"
 
 ## 🧪 Test
 
-La base ha 3 test (`python -I -m unittest discover -s tools -p "test_*.py"`), e passano. La CI esegue il controllo del repository, quello delle immagini e questi test. Un banco simulato (`eh3d_lab_bridge::sim`, provato in `tests/simulation.rs`) scrive il file che uno strumento esporterebbe, con un generatore a seme fisso, con i difetti di questi file - un picco, una deriva, un orologio che torna indietro, punti persi, un'unità persa, un valore di testo, un file troncato e un file vuoto - e i test verificano dove ciascuno viene rifiutato o trovato e che il file pulito successivo viene di nuovo giudicato. Non è stato usato alcuno strumento reale.
+La base ha 68 test (`python -I -m unittest discover -s tools -p "test_*.py"`), e passano. La CI esegue il controllo del repository, quello delle immagini e questi test. Un banco simulato (`eh3d_lab_bridge::sim`, provato in `tests/simulation.rs`) scrive il file che uno strumento esporterebbe, con un generatore a seme fisso, con i difetti di questi file - un picco, una deriva, un orologio che torna indietro, punti persi, un'unità persa, un valore di testo, un file troncato e un file vuoto - e i test verificano dove ciascuno viene rifiutato o trovato e che il file pulito successivo viene di nuovo giudicato. Non è stato usato alcuno strumento reale.
 
 ## 🏗️ Compilazione e rilascio
 

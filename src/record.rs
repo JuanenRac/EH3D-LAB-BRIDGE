@@ -190,4 +190,89 @@ mod tests {
             Err(LbriError::BadJson(_))
         ));
     }
+
+    #[test]
+    fn the_hash_of_nothing_and_of_a_large_block_are_the_known_sha256() {
+        assert_eq!(
+            sha256_hex(b""),
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        );
+        let block = vec![b'a'; 1_000_000];
+        assert_eq!(
+            sha256_hex(&block),
+            "cdc76e5c9914fb9281a1c7e284d73e67f1809a48a497200e046d39ccc7112cd0"
+        );
+    }
+
+    #[test]
+    fn a_text_that_is_not_a_record_is_an_error_and_never_a_panic() {
+        for text in ["", " ", "null", "[]", "12", "{", "{}", "\u{feff}{}"] {
+            assert!(
+                matches!(TestRecord::from_json(text), Err(LbriError::BadJson(_))),
+                "{text:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn a_field_the_record_does_not_know_is_refused() {
+        let text = record(b"x").to_json().replace("\"note\"", "\"comment\"");
+        assert!(matches!(
+            TestRecord::from_json(&text),
+            Err(LbriError::BadJson(_))
+        ));
+    }
+
+    #[test]
+    fn a_hash_in_upper_case_or_of_the_wrong_length_is_incomplete_and_one_condition_in_blanks_too() {
+        let mut upper = record(b"x");
+        upper.data_sha256 = upper.data_sha256.to_uppercase();
+        let mut short = record(b"x");
+        short.data_sha256.pop();
+        let mut blank = record(b"x");
+        blank.conditions.push("   ".into());
+        for (r, subject) in [
+            (upper, "data_sha256"),
+            (short, "data_sha256"),
+            (blank, "conditions"),
+        ] {
+            let found = r.check(Some(b"x"));
+            assert_eq!(found.len(), 1, "{subject}");
+            assert_eq!(found[0].subject, subject);
+            assert_eq!(found[0].code, Code::IncompleteRecord);
+        }
+    }
+
+    #[test]
+    fn data_with_other_content_is_a_mismatch_and_without_the_data_nothing_is_compared() {
+        let r = record(b"first");
+        let changed = r.check(Some(b"second"));
+        assert_eq!(changed.len(), 1);
+        assert_eq!(changed[0].code, Code::HashMismatch);
+        assert!(r.check(None).is_empty());
+        assert!(r.check(Some(b"first")).is_empty());
+    }
+
+    #[test]
+    fn an_empty_record_names_every_missing_part_in_a_fixed_order() {
+        let r = TestRecord {
+            instrument: String::new(),
+            conditions: vec![],
+            quantity: String::new(),
+            data_file: String::new(),
+            data_sha256: String::new(),
+            note: String::new(),
+        };
+        let subjects: Vec<&str> = r.check(None).iter().map(|f| f.subject).collect();
+        assert_eq!(
+            subjects,
+            [
+                "instrument",
+                "conditions",
+                "quantity",
+                "data_file",
+                "data_sha256"
+            ]
+        );
+    }
 }
