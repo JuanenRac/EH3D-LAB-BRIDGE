@@ -46,7 +46,7 @@ Chaque ligne est une partie de ce dépôt et le feu dit où elle en est aujourd'
 | Domaine | État | Ce que cela veut dire ici |
 |---|---|---|
 | Contrôles du dépôt | 🟡 | Le contrôle du dépôt, celui des images et les 68 tests de la base tournent dans la CI et réussissent. |
-| Tests | 🟡 | Les 63 tests du code Rust et les 68 de la base réussissent sur un ordinateur. Ils n'utilisent que des courbes et des fiches faites par les tests eux-mêmes. |
+| Tests | 🟡 | Les 71 tests du code Rust et les 68 de la base réussissent sur un ordinateur. Ils n'utilisent que des courbes et des fiches faites par les tests eux-mêmes. |
 | Matériel réel | 🟠 | Non exécuté sur une machine ni une carte : rien ici n'a été essayé sur du matériel. |
 | Fonction prévue | 🟠 | Écrit : le format CSV avec unités, la fiche d'essai refusée sans instrument, la comparaison avec interpolation, écart, incertitude et un verdict dans la tolérance, hors tolérance ou non concluant. Non écrit : les fichiers de vrais instruments et le lien avec le passeport technique. |
 | Exigences | 🟠 | 5 des 6 exigences sont au stade de prototype ; le lien avec le passeport technique est seulement prévu. Aucune n'est validée et aucune tolérance n'a été fixée sur un vrai banc. |

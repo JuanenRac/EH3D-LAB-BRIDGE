@@ -46,7 +46,7 @@ Ogni riga è una parte di questo repository e il semaforo dice a che punto è og
 | Area | Stato | Cosa significa qui |
 |---|---|---|
 | Controlli del repository | 🟡 | Il controllo del repository, quello delle immagini e i 68 test della base girano nella CI e passano. |
-| Test | 🟡 | I 63 test del codice Rust e i 68 della base passano su un computer. Usano solo curve e schede prodotte dai test stessi. |
+| Test | 🟡 | I 71 test del codice Rust e i 68 della base passano su un computer. Usano solo curve e schede prodotte dai test stessi. |
 | Hardware reale | 🟠 | Non eseguito su nessuna macchina né scheda: nulla qui è stato provato su hardware. |
 | Funzione pianificata | 🟠 | Scritto: il formato CSV con unità, la scheda di prova rifiutata senza strumento, il confronto con interpolazione, scostamento, incertezza e un verdetto entro, fuori o non conclusivo. Non scritto: i file di strumenti reali e il collegamento con il passaporto tecnico. |
 | Requisiti | 🟠 | 5 dei 6 requisiti sono a livello di prototipo; il collegamento con il passaporto tecnico è solo pianificato. Nessuno è validato e nessuna tolleranza è stata fissata su un banco reale. |

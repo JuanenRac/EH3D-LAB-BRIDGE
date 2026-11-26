@@ -325,4 +325,41 @@ mod tests {
             Err(LbriError::UnitMismatch { .. })
         ));
     }
+
+    #[test]
+    fn a_deviation_exactly_on_the_tolerance_is_within_and_a_hair_beyond_is_not() {
+        let sim = curve("x[s],y[V]\n0,0\n10,0\n");
+        let cfg = Config {
+            tolerance: Some(0.5),
+            measurement_uncertainty: Some(0.0),
+            simulation_uncertainty: Some(0.0),
+            ..Config::default()
+        };
+        let on = compare(&curve("x[s],y[V]\n5,0.5\n"), &sim, &cfg).unwrap();
+        assert_eq!(on.verdict, Verdict::Within);
+        let below = compare(&curve("x[s],y[V]\n5,-0.5\n"), &sim, &cfg).unwrap();
+        assert_eq!(below.verdict, Verdict::Within);
+        let beyond = compare(&curve("x[s],y[V]\n5,-0.5000001\n"), &sim, &cfg).unwrap();
+        assert_eq!(beyond.verdict, Verdict::Outside);
+    }
+
+    #[test]
+    fn a_coverage_exactly_on_the_smallest_share_is_enough() {
+        let sim = curve("x[s],y[V]\n0,0\n9,0\n");
+        let mut text = String::from("x[s],y[V]\n");
+        for i in 0..10 {
+            text.push_str(&format!("{i},0\n"));
+        }
+        text.push_str("10,0\n");
+        let cfg = Config {
+            tolerance: Some(0.1),
+            measurement_uncertainty: Some(0.0),
+            simulation_uncertainty: Some(0.0),
+            min_coverage: 10.0 / 11.0,
+            ..Config::default()
+        };
+        let c = compare(&curve(&text), &sim, &cfg).unwrap();
+        assert_eq!((c.points.len(), c.outside_range), (10, 1));
+        assert_eq!(c.verdict, Verdict::Within);
+    }
 }

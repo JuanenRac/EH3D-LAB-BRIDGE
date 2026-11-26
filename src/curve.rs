@@ -440,4 +440,59 @@ mod tests {
         let c = Curve::from_csv("x[s],y[V],u[V]\n0,1,0\n1,2,0.0\n", &cfg()).unwrap();
         assert_eq!(c.u, Some(vec![0.0, 0.0]));
     }
+
+    #[test]
+    fn seeded_curves_read_back_the_same_and_interpolate_between_their_neighbours() {
+        let mut state = 99u64;
+        let mut next = || {
+            state = state
+                .wrapping_mul(6_364_136_223_846_793_005)
+                .wrapping_add(1_442_695_040_888_963_407);
+            (state >> 40) as f64 / 1000.0
+        };
+        for round in 0..100 {
+            let mut x = Vec::new();
+            let mut at = -next();
+            for _ in 0..2 + round % 7 {
+                at += 0.001 + next() / 1000.0;
+                x.push(at);
+            }
+            let y: Vec<f64> = x.iter().map(|_| next() - 8000.0).collect();
+            let u: Vec<f64> = x.iter().map(|_| next()).collect();
+            let curve = Curve {
+                x_unit: "s".into(),
+                y_unit: "V".into(),
+                x,
+                y,
+                u: Some(u),
+            };
+            let again = Curve::from_csv(&curve.to_csv(), &cfg()).unwrap();
+            assert_eq!(again, curve, "round {round}");
+            for i in 0..curve.x.len() - 1 {
+                let middle = curve.x[i] + (curve.x[i + 1] - curve.x[i]) / 2.0;
+                let got = curve.at(middle).unwrap();
+                let (low, high) = (
+                    curve.y[i].min(curve.y[i + 1]),
+                    curve.y[i].max(curve.y[i + 1]),
+                );
+                assert!(got >= low - 1e-9 && got <= high + 1e-9, "round {round}");
+                assert_eq!(curve.at(curve.x[i]), Some(curve.y[i]), "round {round}");
+            }
+            assert_eq!(curve.at(f64::NAN), None);
+            assert_eq!(curve.at(curve.x[0] - 1.0), None);
+        }
+    }
+
+    #[test]
+    fn exactly_the_most_points_are_read_and_one_more_is_not() {
+        let three = Config {
+            max_points: 3,
+            ..Config::default()
+        };
+        assert!(Curve::from_csv("x[s],y[V]\n1,1\n2,2\n3,3\n", &three).is_ok());
+        assert!(matches!(
+            Curve::from_csv("x[s],y[V]\n1,1\n2,2\n3,3\n4,4\n", &three),
+            Err(LbriError::TooLarge { .. })
+        ));
+    }
 }
