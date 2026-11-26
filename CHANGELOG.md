@@ -3,6 +3,9 @@
 All notable changes to this project are documented here.
 
 ## [Unreleased]
+
+## [0.0.5] - Records that are not UTF-8 are refused, and many more tests
+
 - **A test record that is not UTF-8 text is refused:** the bytes that were not text were replaced and the record was accepted with other letters than the ones written.
 - **A JSON array is no longer read as a record:** only an object is.
 - **8 more tests** of the Rust code: seeded curves read back and interpolated between their neighbours, the limits of points, tolerance and coverage exactly on their edge and a record cut at every place.
