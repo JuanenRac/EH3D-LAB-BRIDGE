@@ -114,7 +114,9 @@ fn dispatch(args: &[String], out: &mut dyn Write) -> Result<i32, Option<LbriErro
             })
         }
         ["record", path] | ["record", path, _] => {
-            let text = String::from_utf8_lossy(&bytes(path)?).into_owned();
+            // replacing the bytes that are not text would accept a record that is not the one that was written
+            let text = String::from_utf8(bytes(path)?)
+                .map_err(|_| Some(LbriError::BadJson("the file is not UTF-8 text".into())))?;
             let record = TestRecord::from_json(&text).map_err(Some)?;
             let data = match rest.get(2) {
                 Some(p) => Some(bytes(p)?),
@@ -230,5 +232,25 @@ mod tests {
         let (code, out, _) = run_args(&["record", &none]);
         assert_eq!(code, 1);
         assert!(out.contains("[instrument]"), "{out}");
+    }
+
+    #[test]
+    fn a_record_that_is_not_utf8_text_ends_with_2_and_is_not_accepted_with_replaced_letters() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("latin1.json");
+        let mut bytes = br#"{"instrument":"scope","conditions":["25 "#.to_vec();
+        bytes.push(0xB0);
+        bytes.extend_from_slice(
+            format!(
+                r#"C"],"quantity":"v","data_file":"a.csv","data_sha256":"{}"}}"#,
+                "0".repeat(64)
+            )
+            .as_bytes(),
+        );
+        fs::write(&path, bytes).unwrap();
+        let (code, out, err) = run_args(&["record", path.to_str().unwrap()]);
+        assert_eq!(code, 2, "{out}");
+        assert!(err.contains("UTF-8"), "{err}");
+        assert!(out.is_empty(), "{out}");
     }
 }

@@ -48,6 +48,10 @@ pub fn sha256_hex(bytes: &[u8]) -> String {
 impl TestRecord {
     /// Read a record from JSON (unknown fields are refused).
     pub fn from_json(text: &str) -> Result<TestRecord, LbriError> {
+        // a JSON array would be read as a list of the fields in order, so only an object is a record
+        if !text.trim_start().starts_with('{') {
+            return Err(LbriError::BadJson("a JSON object was expected".into()));
+        }
         serde_json::from_str(text).map_err(|e| LbriError::BadJson(e.to_string()))
     }
 
@@ -274,5 +278,42 @@ mod tests {
                 "data_sha256"
             ]
         );
+    }
+
+    #[test]
+    fn a_json_array_is_not_a_record() {
+        let hash = sha256_hex(b"x");
+        let text = format!(r#"["scope",["bench"],"voltage","run.csv","{hash}",""]"#);
+        assert!(matches!(
+            TestRecord::from_json(&text),
+            Err(LbriError::BadJson(_))
+        ));
+    }
+
+    #[test]
+    fn a_record_cut_at_any_place_is_an_error_and_never_a_panic() {
+        let mut r = record(b"x");
+        r.note = "25 \u{b0}C \u{6e2c}".into();
+        let text = r.to_json();
+        for end in (0..text.len()).filter(|i| text.is_char_boundary(*i)) {
+            assert!(
+                matches!(
+                    TestRecord::from_json(&text[..end]),
+                    Err(LbriError::BadJson(_))
+                ),
+                "cut at {end}"
+            );
+        }
+    }
+
+    #[test]
+    fn a_field_written_twice_is_refused() {
+        let text = record(b"x")
+            .to_json()
+            .replacen('{', "{\"quantity\":\"current\",", 1);
+        assert!(matches!(
+            TestRecord::from_json(&text),
+            Err(LbriError::BadJson(_))
+        ));
     }
 }
