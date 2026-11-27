@@ -46,7 +46,7 @@ Jede Zeile ist ein Teil dieses Repositorys, und die Ampel sagt, wie weit er heut
 | Bereich | Stand | Was das hier bedeutet |
 |---|---|---|
 | Repository-Prüfungen | 🟡 | Die Repository-Prüfung, die Prüfung der Bilder und die 68 Tests der Basis laufen in der CI und bestehen. |
-| Tests | 🟡 | Die 71 Tests des Rust-Codes und die 68 der Basis bestehen auf einem Rechner. Sie verwenden nur Kurven und Protokolle der Tests selbst. |
+| Tests | 🟡 | Die 72 Tests des Rust-Codes und die 68 der Basis bestehen auf einem Rechner. Sie verwenden nur Kurven und Protokolle der Tests selbst. |
 | Echte Hardware | 🟠 | Auf keiner Maschine und keiner Platine ausgeführt: nichts hier wurde auf Hardware ausprobiert. |
 | Geplante Funktion | 🟠 | Geschrieben: das CSV-Format mit Einheiten, das ohne Gerät abgelehnte Prüfprotokoll, der Vergleich mit Interpolation, Abweichung, Unsicherheit und einem Urteil innerhalb, außerhalb oder nicht eindeutig. Nicht geschrieben: Dateien echter Messgeräte und die Verbindung zum technischen Pass. |
 | Anforderungen | 🟠 | 5 der 6 Anforderungen sind im Prototyp; die Verbindung zum technischen Pass ist nur geplant. Keine ist validiert, und an einem echten Messplatz wurde keine Toleranz festgelegt. |

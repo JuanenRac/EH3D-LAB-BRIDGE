@@ -4,6 +4,9 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+- **`record` without the data file says what it did not check:** it printed "0 findings" with no word that the hash had not been compared with any data. It now says so; the exit code does not change.
+- **1 more test** of the Rust code, for the above.
+
 ## [0.0.5] - Records that are not UTF-8 are refused, and many more tests
 
 - **A test record that is not UTF-8 text is refused:** the bytes that were not text were replaced and the record was accepted with other letters than the ones written.
