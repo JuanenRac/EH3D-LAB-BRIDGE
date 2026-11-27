@@ -46,7 +46,7 @@ Each line is one part of this repository and the light says how far it is today.
 | Area | State | What it means here |
 |---|---|---|
 | Repository checks | 🟡 | The repository check, the check of the pictures and the 68 tests of the base run in CI and pass. |
-| Tests | 🟡 | 72 tests of the Rust code and the 68 of the base pass on a computer. They use only curves and records made by the tests themselves. |
+| Tests | 🟡 | 73 tests of the Rust code and the 68 of the base pass on a computer. They use only curves and records made by the tests themselves. |
 | Real hardware | 🟠 | Not run on any machine or board: nothing here has been tried on hardware. |
 | Planned function | 🟠 | Written: the CSV format with units, the test record that is rejected without an instrument, the comparison with interpolation, deviation, uncertainty and a verdict that is within, outside or inconclusive. Not written: files of real instruments and the link with the technical passport. |
 | Requirements | 🟠 | 5 of the 6 requirements are at prototype; the link with the technical passport is only planned. None is validated and no tolerance has been set from a real bench. |

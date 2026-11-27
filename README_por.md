@@ -46,7 +46,7 @@ Cada linha é uma parte deste repositório e a luz diz até onde chega hoje. É 
 | Área | Estado | O que significa aqui |
 |---|---|---|
 | Verificações do repositório | 🟡 | A verificação do repositório, a das imagens e os 68 testes da base correm na CI e passam. |
-| Testes | 🟡 | Os 72 testes do código Rust e os 68 da base passam num computador. Usam apenas curvas e registos feitos pelos próprios testes. |
+| Testes | 🟡 | Os 73 testes do código Rust e os 68 da base passam num computador. Usam apenas curvas e registos feitos pelos próprios testes. |
 | Hardware real | 🟠 | Não foi executado em nenhuma máquina nem placa: nada aqui foi experimentado em hardware. |
 | Função planeada | 🟠 | Escrito: o formato CSV com unidades, o registo de ensaio rejeitado sem instrumento, a comparação com interpolação, desvio, incerteza e um veredicto dentro, fora ou inconclusivo. Por escrever: ficheiros de instrumentos reais e a ligação ao passaporte técnico. |
 | Requisitos | 🟠 | 5 dos 6 requisitos estão em protótipo; a ligação ao passaporte técnico está apenas planeada. Nenhum está validado e nenhuma tolerância foi definida numa bancada real. |
