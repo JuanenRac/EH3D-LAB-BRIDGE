@@ -126,6 +126,12 @@ fn dispatch(args: &[String], out: &mut dyn Write) -> Result<i32, Option<LbriErro
             for f in &findings {
                 let _ = writeln!(out, "{} [{}]: {}", f.code.as_str(), f.subject, f.message);
             }
+            if data.is_none() {
+                let _ = writeln!(
+                    out,
+                    "# no data file given: the hash was not compared with any data"
+                );
+            }
             let _ = writeln!(out, "# {} findings", findings.len());
             Ok(if findings.is_empty() { 0 } else { 1 })
         }
@@ -252,5 +258,30 @@ mod tests {
         assert_eq!(code, 2, "{out}");
         assert!(err.contains("UTF-8"), "{err}");
         assert!(out.is_empty(), "{out}");
+    }
+
+    #[test]
+    fn a_record_checked_without_its_data_says_the_hash_was_not_compared() {
+        let work = tempfile::tempdir().unwrap();
+        let data = work.path().join("d.csv");
+        let record = work.path().join("r.json");
+        std::fs::write(&data, "abc").unwrap();
+        std::fs::write(
+            &record,
+            r#"{"instrument":"i","conditions":["c"],"quantity":"q","data_file":"d.csv","data_sha256":"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"}"#,
+        )
+        .unwrap();
+        let run = |args: &[&str]| {
+            let args: Vec<String> = args.iter().map(|a| a.to_string()).collect();
+            let (mut out, mut err) = (Vec::new(), Vec::new());
+            let code = crate::cli::run(&args, &mut out, &mut err);
+            (code, String::from_utf8(out).unwrap())
+        };
+        let (code, text) = run(&["record", record.to_str().unwrap()]);
+        assert_eq!(code, 0);
+        assert!(text.contains("the hash was not compared"), "{text}");
+        let (code, text) = run(&["record", record.to_str().unwrap(), data.to_str().unwrap()]);
+        assert_eq!(code, 0, "{text}");
+        assert!(!text.contains("not compared"), "{text}");
     }
 }
