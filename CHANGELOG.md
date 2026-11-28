@@ -4,6 +4,8 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.0.6] - Records say what was not checked and output lines cannot be forged
+
 - **`record` without the data file says what it did not check:** it printed "0 findings" with no word that the hash had not been compared with any data. It now says so; the exit code does not change.
 - **1 more test** of the Rust code, for the above.
 - **A name read from a file can no longer forge a line of the output:** line breaks and control characters in the units shown by `import` and the error messages are printed as spaces. What is compared, hashed and the exit codes do not change.
